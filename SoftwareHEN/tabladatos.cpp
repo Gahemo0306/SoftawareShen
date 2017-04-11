@@ -177,6 +177,31 @@ TablaDatos::TablaDatos(QWidget *parent) :
                         }
                     }
                     connect(ui->Workspace, &QTableWidget::cellChanged,this, &TablaDatos::on_Workspace_cellChanged);
+                    QFile FileWork(WORKSPACE_FILENAME);
+                    if (!FileWork.open(QIODevice::WriteOnly)){
+                        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+                        return;
+                    }
+                    QVector<QVector<double>> WORKSPACE_matrix;
+                    row = ui->Workspace->rowCount();
+                    column = ui->Workspace->columnCount();
+                    WORKSPACE_matrix.resize(row);
+                    for(int i = 0; i < row; i++)
+                    {
+                        WORKSPACE_matrix[i].resize(column);
+                    }
+                    for(int i = 0; i < row; i++)
+                    {
+                        for(int j = 0; j < column; j++){
+                            WORKSPACE_matrix[i][j] = ui->Workspace->item(i,j)->text().toDouble();
+                        }
+                    }
+                    QDataStream out(&F);
+                    out.setVersion(QDataStream::Qt_5_4);
+                    WORKSPACE work(WORKSPACE_matrix);
+                    out << work;
+                    FileWork.flush();
+                    FileWork.close();
                 }
             }
         }
