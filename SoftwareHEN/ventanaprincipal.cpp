@@ -91,10 +91,10 @@ void VentanaPrincipal::on_actionNew_triggered() //NEW
         QMessageBox::critical(this,"error",F.errorString());
         return;
     }
-    QDataStream out(&F);
-    out.setVersion(QDataStream::Qt_5_4);
+    QDataStream out1(&F);
+    out1.setVersion(QDataStream::Qt_5_4);
     Duvaloraction valoraction(ValorACTION);
-    out << valoraction;
+    out1 << valoraction;
     F.flush();
     F.close();
     loadSubWindow(new TablaDatos(this),ValorACTION);
@@ -109,10 +109,10 @@ void VentanaPrincipal::on_actionOpen_triggered()
         QMessageBox::critical(this,"error",F.errorString());
         return;
     }
-    QDataStream out(&F);
-    out.setVersion(QDataStream::Qt_5_4);
+    QDataStream out1(&F);
+    out1.setVersion(QDataStream::Qt_5_4);
     Duvaloraction valoraction(ValorACTION);
-    out << valoraction;
+    out1 << valoraction;
     F.flush();
     F.close();
     loadSubWindow(new TablaDatos(this),ValorACTION);

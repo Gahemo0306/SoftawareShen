@@ -1,7 +1,20 @@
 #ifndef CONTENIDO_PLOTS_H
 #define CONTENIDO_PLOTS_H
-
+#include <QFileSystemModel>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QFileDialog>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QFile>
+#include <QDataStream>
+#include <QVector>
+#include <QString>
+#include <QStringList>
+#include <QDebug>
 #include <QWidget>
+#include "duvaloraction.h"
+#include "valoraction.h"
 
 namespace Ui {
 class Contenido_PLOTS;
@@ -17,17 +30,12 @@ public:
 
 private slots:
 
-    void on_Uniforme_clicked(bool checked1);
-
-    void on_Diverso_clicked(bool checked2);
-
-    void on_StaticradioButton_clicked(bool checked3);
-
-    void on_IncrementradioButton_clicked(bool checked4);
-
+    void on_Uniforme_clicked();
+    void on_Diverso_clicked();
+    void on_StaticradioButton_clicked();
+    void on_IncrementradioButton_clicked();
     void RADIOBUTTONS();
-
-    void on_plot_push_clicked(bool checked);
+    void on_plot_push_clicked();
 
 private:
     Ui::Contenido_PLOTS *ui;

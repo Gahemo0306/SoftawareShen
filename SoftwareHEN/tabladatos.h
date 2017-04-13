@@ -50,11 +50,8 @@ private slots:
     void on_treeView_clicked(const QModelIndex &index);
     void INICIO(int accion, int ANALISIS);
     //RECEPTORES DE LA SEÑAL
-    void actionNewAC();
     void on_TypeAnalysis_currentIndexChanged(int index);
-
     void on_listView_doubleClicked(const QModelIndex &index);
-
     void on_Workspace_cellChanged(int row, int column);
 
 private:

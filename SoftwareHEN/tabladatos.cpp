@@ -1,19 +1,18 @@
-//#include <QFileSystemModel>
-//#include <QMessageBox>
-//#include <QTextStream>
-//#include <QFileDialog>
-//#include <QTableWidget>
-//#include <QTableWidgetItem>
-//#include <QFile>
-//#include <QDataStream>
-//#include <QVector>
-//#include <QString>
-//#include <QStringList>
-//#include <QDebug>
 #include "duvaloraction.h"
 #include "valoraction.h"
 #include "tabladatos.h"
 #include "ui_tabladatos.h"
+#include <QVector>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QFileDialog>
+#include <QTableWidget>
+#include <QFile>
+#include <QDataStream>
+#include <QVector>
+#include <QString>
+#include <QStringList>
+#include <QDebug>
 
 TablaDatos::TablaDatos(QWidget *parent) :
     QWidget(parent),
@@ -35,11 +34,11 @@ TablaDatos::TablaDatos(QWidget *parent) :
         QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
         return;
     }
-    QDataStream in(&F);
-    in.setVersion(QDataStream::Qt_5_4);
+    QDataStream in1(&F);
+    in1.setVersion(QDataStream::Qt_5_4);
     Duvaloraction valoraction;
-    while(!in.atEnd()){
-        in >> valoraction;
+    while(!in1.atEnd()){
+        in1 >> valoraction;
         int accion = valoraction.getvalact();
         if(valoraction.getvalact() == 1){  //NEW
             INICIO(accion,0);
@@ -183,25 +182,40 @@ TablaDatos::TablaDatos(QWidget *parent) :
                         return;
                     }
                     QVector<QVector<double>> WORKSPACE_matrix;
-                    row = ui->Workspace->rowCount();
-                    column = ui->Workspace->columnCount();
-                    WORKSPACE_matrix.resize(row);
-                    for(int i = 0; i < row; i++)
+                    filas = ui->Workspace->rowCount();
+                    columnas = ui->Workspace->columnCount();
+                    WORKSPACE_matrix.resize(filas);
+                    for(int i = 0; i < filas; i++)
                     {
-                        WORKSPACE_matrix[i].resize(column);
+                        WORKSPACE_matrix[i].resize(columnas);
                     }
-                    for(int i = 0; i < row; i++)
+                    for(int i = 0; i < filas; i++)
                     {
-                        for(int j = 0; j < column; j++){
+                        for(int j = 0; j < columnas; j++){
                             WORKSPACE_matrix[i][j] = ui->Workspace->item(i,j)->text().toDouble();
                         }
                     }
-                    QDataStream out(&F);
-                    out.setVersion(QDataStream::Qt_5_4);
-                    WORKSPACE work(WORKSPACE_matrix);
-                    out << work;
+                    QDataStream out2(&FileWork);
+                    out2.setVersion(QDataStream::Qt_5_4);
+                    Workspace MATRIZ(WORKSPACE_matrix);//,QTypeanalisis,Itypeanalisis,QTemp,ITemp,QWcp,IWcp,Qh,Ih,SI,SIS);
+                    out2 << MATRIZ;
                     FileWork.flush();
                     FileWork.close();
+                    //
+                    QFile FileUnidades(UNIDADES_FILENAME);
+                    if (!FileUnidades.open(QIODevice::WriteOnly)){
+                        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+                        return;
+                    }
+                    QDataStream out3(&FileUnidades);
+                    out3.setVersion(QDataStream::Qt_5_4);
+                    int ITemp = ui->TcomboBox->currentIndex(), IWcp = ui->WcomboBox->currentIndex();
+                    int Ih  = ui->FcomboBox->currentIndex();
+                    bool SI = ui->SIradioButton->isChecked(), SIS = ui->SISradioButton->isChecked();
+                    Unidades units(SI,SIS,ITemp,IWcp,Ih);
+                    out3 << units;
+                    FileUnidades.flush();
+                    FileUnidades.close();
                 }
             }
         }
@@ -615,13 +629,6 @@ void TablaDatos::INICIO(int accion, int ANALISIS)
     }
 }
 
-void TablaDatos::actionNewAC()
-{
-    //int val=9;
-    //ui->NumeroCorrientes->setValue(val);
-    QMessageBox::warning(this,tr("Error"),tr("Missing units"));
-}
-
 void TablaDatos::on_TypeAnalysis_currentIndexChanged(int index)
 {
     //index = ui->TypeAnalysis->currentIndex();
@@ -713,7 +720,6 @@ void TablaDatos::on_TypeAnalysis_currentIndexChanged(int index)
         ui->SIradioButton->setEnabled(true);
         ui->SISradioButton->setEnabled(true);
     }else if(index==4){ // all
-
         ui->TcomboBox->setVisible(false);
         ui->WcomboBox->setVisible(false);
         ui->FcomboBox->setVisible(false);
@@ -743,10 +749,10 @@ void TablaDatos::on_TypeAnalysis_currentIndexChanged(int index)
         QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
         return;
     }
-    QDataStream out(&F);
-    out.setVersion(QDataStream::Qt_5_4);
+    QDataStream out5(&F);
+    out5.setVersion(QDataStream::Qt_5_4);
     Valordeoperacion valor(index);
-    out << valor;
+    out5 << valor;
     F.flush();
     F.close();
 }
@@ -769,7 +775,9 @@ void TablaDatos::on_listView_doubleClicked(const QModelIndex &index)
             //aqui va el ciclo while
             int Properties;
             int contadorlines=1; // file line counter
+            ui->Workspace->clear();
             ui->Workspace->setRowCount(0);
+            disconnect(ui->Workspace, SIGNAL(cellChanged(int,int)), 0, 0);
             while (!in.atEnd()) {
                 if(contadorlines==1){
                     QString fileLine = in.readLine();
@@ -879,6 +887,47 @@ void TablaDatos::on_listView_doubleClicked(const QModelIndex &index)
                 contadorlines++;
             }
             file.close();
+            connect(ui->Workspace, &QTableWidget::cellChanged,this, &TablaDatos::on_Workspace_cellChanged);
+            QFile FileWork(WORKSPACE_FILENAME);
+            if (!FileWork.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+                return;
+            }
+            QVector<QVector<double>> WORKSPACE_matrix;
+            int filas = ui->Workspace->rowCount();
+            int columnas = ui->Workspace->columnCount();
+            WORKSPACE_matrix.resize(filas);
+            for(int i = 0; i < filas; i++)
+            {
+                WORKSPACE_matrix[i].resize(columnas);
+            }
+            for(int i = 0; i < filas; i++)
+            {
+                for(int j = 0; j < columnas; j++){
+                    WORKSPACE_matrix[i][j] = ui->Workspace->item(i,j)->text().toDouble();
+                }
+            }
+            QDataStream out2(&FileWork);
+            out2.setVersion(QDataStream::Qt_5_4);
+            Workspace MATRIZ(WORKSPACE_matrix);
+            out2 << MATRIZ;
+            FileWork.flush();
+            FileWork.close();
+            // GUARDAR UNIDADES Y SISTEMAS
+            QFile FileUnidades(UNIDADES_FILENAME);
+            if (!FileUnidades.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+                return;
+            }
+            QDataStream out3(&FileUnidades);
+            out3.setVersion(QDataStream::Qt_5_4);
+            int ITemp = ui->TcomboBox->currentIndex(), IWcp = ui->WcomboBox->currentIndex();
+            int Ih  = ui->FcomboBox->currentIndex();
+            bool SI = ui->SIradioButton->isChecked(), SIS = ui->SISradioButton->isChecked();
+            Unidades units(SI,SIS,ITemp,IWcp,Ih);
+            out3 << units;
+            FileUnidades.flush();
+            FileUnidades.close();
         }
     }
 }
@@ -886,13 +935,13 @@ void TablaDatos::on_listView_doubleClicked(const QModelIndex &index)
 void TablaDatos::on_UploadExistinpushButton_clicked()
 {
     QString file_name = QFileDialog::getOpenFileName(this,"Open the file");
-    //ui->label->setText(file_name);
     QFile file(file_name);
     file_path = file_name;
     if (file_path.contains(".csv")){
         if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             QTextStream in(&file);
             int contadorlines=0;
+            disconnect(ui->Workspace, SIGNAL(cellChanged(int,int)), 0, 0);
             int lineindex= ui->Workspace->rowCount();
             while (!in.atEnd()) {
                 if(contadorlines<3){
@@ -935,6 +984,47 @@ void TablaDatos::on_UploadExistinpushButton_clicked()
                 contadorlines++;
             }
             file.close();
+            connect(ui->Workspace, &QTableWidget::cellChanged,this, &TablaDatos::on_Workspace_cellChanged);
+            QFile FileWork(WORKSPACE_FILENAME);
+            if (!FileWork.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+                return;
+            }
+            QVector<QVector<double>> WORKSPACE_matrix;
+            int filas = ui->Workspace->rowCount();
+            int columnas = ui->Workspace->columnCount();
+            WORKSPACE_matrix.resize(filas);
+            for(int i = 0; i < filas; i++)
+            {
+                WORKSPACE_matrix[i].resize(columnas);
+            }
+            for(int i = 0; i < filas; i++)
+            {
+                for(int j = 0; j < columnas; j++){
+                    WORKSPACE_matrix[i][j] = ui->Workspace->item(i,j)->text().toDouble();
+                }
+            }
+            QDataStream out2(&FileWork);
+            out2.setVersion(QDataStream::Qt_5_4);
+            Workspace MATRIZ(WORKSPACE_matrix);
+            out2 << MATRIZ;
+            FileWork.flush();
+            FileWork.close();
+            // GUARDAR UNIDADES Y SISTEMAS
+            QFile FileUnidades(UNIDADES_FILENAME);
+            if (!FileUnidades.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+                return;
+            }
+            QDataStream out3(&FileUnidades);
+            out3.setVersion(QDataStream::Qt_5_4);
+            int ITemp = ui->TcomboBox->currentIndex(), IWcp = ui->WcomboBox->currentIndex();
+            int Ih  = ui->FcomboBox->currentIndex();
+            bool SI = ui->SIradioButton->isChecked(), SIS = ui->SISradioButton->isChecked();
+            Unidades units(SI,SIS,ITemp,IWcp,Ih);
+            out3 << units;
+            FileUnidades.flush();
+            FileUnidades.close();
         }
     }
 }
@@ -945,36 +1035,53 @@ void TablaDatos::on_Workspace_cellChanged(int row, int column)
     int c = ui->Workspace->columnCount();
     for(int i = 0; i < r ; i++){
         for(int j = 0; j < c ; j++){
-            if (ui->Workspace->item(i,j)->text() == "Empty"){
+            if (!ui->Workspace->item(i,j)){
+               return;
+            }else if (ui->Workspace->item(i,j)->text() == "Empty"){
                return;
             }else if (ui->Workspace->item(i,j)->text() == "0"){
                return;
             }
         }
     }
-    QFile F(WORKSPACE_FILENAME);
-    if (!F.open(QIODevice::WriteOnly)){
-        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+    QFile FileWork(WORKSPACE_FILENAME);
+    if (!FileWork.open(QIODevice::WriteOnly)){
+        QMessageBox::warning(this,tr("Error"),tr("Error"));
         return;
     }
     QVector<QVector<double>> WORKSPACE_matrix;
-    row = ui->Workspace->rowCount();
-    column = ui->Workspace->columnCount();
-    WORKSPACE_matrix.resize(row);
-    for(int i = 0; i < row; i++)
+    int filas = ui->Workspace->rowCount();
+    int columnas = ui->Workspace->columnCount();
+    WORKSPACE_matrix.resize(filas);
+    for(int i = 0; i < filas; i++)
     {
-        WORKSPACE_matrix[i].resize(column);
+        WORKSPACE_matrix[i].resize(columnas);
     }
-    for(int i = 0; i < row; i++)
+    for(int i = 0; i < filas; i++)
     {
-        for(int j = 0; j < column; j++){
+        for(int j = 0; j < columnas; j++){
             WORKSPACE_matrix[i][j] = ui->Workspace->item(i,j)->text().toDouble();
         }
     }
-    QDataStream out(&F);
-    out.setVersion(QDataStream::Qt_5_4);
-    WORKSPACE work(WORKSPACE_matrix);
-    out << work;
-    F.flush();
-    F.close();
+    QDataStream out2(&FileWork);
+    out2.setVersion(QDataStream::Qt_5_4);
+    Workspace MATRIZ(WORKSPACE_matrix);
+    out2 << MATRIZ;
+    FileWork.flush();
+    FileWork.close();
+    // GUARDAR UNIDADES Y SISTEMAS
+    QFile FileUnidades(UNIDADES_FILENAME);
+    if (!FileUnidades.open(QIODevice::WriteOnly)){
+        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+        return;
+    }
+    QDataStream out3(&FileUnidades);
+    out3.setVersion(QDataStream::Qt_5_4);
+    int ITemp = ui->TcomboBox->currentIndex(), IWcp = ui->WcomboBox->currentIndex();
+    int Ih  = ui->FcomboBox->currentIndex();
+    bool SI = ui->SIradioButton->isChecked(), SIS = ui->SISradioButton->isChecked();
+    Unidades units(SI,SIS,ITemp,IWcp,Ih);
+    out3 << units;
+    FileUnidades.flush();
+    FileUnidades.close();
 }

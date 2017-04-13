@@ -2,6 +2,7 @@
 #include "ui_plots.h"
 #include "contenido_plots.h"
 #include "duvaloraction.h"
+#include "valoraction.h"
 #include "QFile"
 #include "QDataStream"
 #include "QMessageBox"
@@ -15,11 +16,11 @@ plots::plots(QWidget *parent) :
         QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
         return;
     }
-    QDataStream in(&F);
-    in.setVersion(QDataStream::Qt_5_4);
+    QDataStream in5(&F);
+    in5.setVersion(QDataStream::Qt_5_4);
     Valordeoperacion valor;
-    while(!in.atEnd()){
-        in >> valor;
+    while(!in5.atEnd()){
+        in5 >> valor;
         if(valor.getvalor() == 0){  //NEW
             // aqui no se hace nada no se tiene nada de nada
         }else if(valor.getvalor() == 1){
@@ -41,14 +42,13 @@ plots::plots(QWidget *parent) :
         QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
         return;
     }
-    QDataStream out(&Fil);
-    out.setVersion(QDataStream::Qt_5_4);
-    Tabplot tabvalue;
+    QDataStream out4(&Fil);
+    out4.setVersion(QDataStream::Qt_5_4);
+    Tabplot tabvalue(1);
     tabvalue.settabvalue(1);
-    out << tabvalue;
+    out4 << tabvalue;
     Fil.flush();
     Fil.close();
-
 }
 
 plots::~plots()
@@ -65,10 +65,10 @@ void plots::on_tabWidget_currentChanged(int index)
         QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
         return;
     }
-    QDataStream out(&F);
-    out.setVersion(QDataStream::Qt_5_4);
+    QDataStream out4(&F);
+    out4.setVersion(QDataStream::Qt_5_4);
     Tabplot tabvalue(index);
-    out << tabvalue;
+    out4 << tabvalue;
     F.flush();
     F.close();
 }
