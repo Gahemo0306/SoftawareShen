@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
+    <width>748</width>
     <height>556</height>
    </rect>
   </property>
@@ -916,7 +916,6 @@
       <attribute name="title">
        <string> Both</string>
       </attribute>
-      <zorder>label_13</zorder>
      </widget>
     </widget>
    </item>
@@ -952,8 +951,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>tabWidget</zorder>
-  <zorder>DAVISO</zorder>
  </widget>
  <resources/>
  <connections/>

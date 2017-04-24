@@ -4,16 +4,25 @@
 #include <QDesktopWidget>
 #include <QMainWindow>
 #include <QApplication>
+#include "duvaloraction.h"
+#include <QFile>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setStyle("fusion");
-    QDesktopWidget dw;
+    //QDesktopWidget dw;
     VentanaPrincipal first;
-    int x=dw.width()*0.8;
-    int y=dw.height()*0.8;
-    first.setFixedSize(x,y);
+    // VALORACTION_FILENAME "./Valoraction.bin"
+//#define WORKSPACE_FILENAME "./¨Workspace.bin"
+//#define TYPEOPERATION_FILENAME "./Typeoperation.bin"
+//#define TABPLOT_FILENAME "./Tabplot.bin"
+//#define GRAFOPERACIONES_FILENAME "./plots.bin"
+//#define UNIDADES_FILENAME "./unidades.bin"
+
+//    int x=dw.width()*0.8;
+//    int y=dw.height()*0.8;
+//    first.setFixedSize(x,y);
     //TablaDatos second;
 
     //QObject::connect(&first,SIGNAL(actionNew(int)),&second,SLOT(actionNewAC()));

@@ -53,6 +53,9 @@ private slots:
     void on_TypeAnalysis_currentIndexChanged(int index);
     void on_listView_doubleClicked(const QModelIndex &index);
     void on_Workspace_cellChanged(int row, int column);
+    void on_TcomboBox_currentIndexChanged(int index);
+    void on_WcomboBox_currentIndexChanged(int index);
+    void on_FcomboBox_currentIndexChanged(int index);
 
 private:
     QStringList titulos;

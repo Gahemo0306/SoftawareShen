@@ -1,5 +1,11 @@
 #include "duvaloraction.h"
 #include <QVector>
+#include <qalgorithms.h>
+#include <iostream>
+#include <qalgorithms.h>
+#include <QtMath>
+#include <QDebug>
+#include <QtAlgorithms>
 
 Duvaloraction::Duvaloraction(int valact)
 {
@@ -89,6 +95,193 @@ int Unidades::getUh()
     return MUh;
 }
 
+
+void Unidades::ConvertirUnidades(QVector<double> ST, QVector<double> TT, QVector<double> Cp, bool SI, bool SIN, int A, int B)
+{
+    MST.resize(ST.size());
+    MTT.resize(TT.size());
+    MCp.resize(Cp.size());
+    if(SI == true){
+        //  CONVIERTE LAS TEMPERATURAS A UNIDADES DE �F
+        //  WCP A UNIDADES DE BTU/HR�F
+        //  H SIGUE CONSTANTE BTU/HR FT^2 �F
+        // CONVERSION DE TEMPERATURA DE ENTRADA Y OBJETIVO
+        if (A == 1) {
+            // Conversi�n de Kelvin a Farenheit
+            for (int i = 0; i < ST.size(); i++){
+                MST[i] = ST[i] * 1.8 - 459.67;
+                MTT[i] = TT[i] * 1.8 - 459.67;
+            }
+        } else if (A == 2) {
+            // Conversi�n de Farenheit a Farenheit
+            for (int i = 0; i < ST.size(); i++){
+                MST[i] = ST[i];
+                MTT[i] = TT[i];
+            }
+        } else if (A == 3) {
+            // Conversi�n de Celsius a Farenheit
+            for (int i =0; i < ST.size(); i++){
+                MST[i] = ST[i] * 1.8 + 32.0;
+                MTT[i] = TT[i] * 1.8 + 32.0;
+            }
+        } else if (A == 4) {
+            // Conversi�n de Ranking a Farenheit
+            for (int i =0; i < ST.size(); i++){
+                MST[i] = ST[i] - 459.67;
+                MTT[i] = TT[i] - 459.67;
+            }
+        }
+        //  CONVERCI�N DE WCP
+        if (B == 1) {
+            for (int i =0; i < Cp.size(); i++){
+                MCp[i] = Cp[i];
+            }
+        } else if (B == 2) {
+            for (int i =0; i < Cp.size(); i++){
+                MCp[i] = Cp[i] * 60.0;
+            }
+        } else if (B == 3) {
+            for (int i =0; i < Cp.size(); i++){
+                MCp[i] = Cp[i] * 3600.0;
+            }
+        } else if (B == 4) {
+            for (int i =0; i < Cp.size(); i++){
+                MCp[i] = Cp[i] * 0.55555555556;
+            }
+        } else if (B == 5) {
+            for (int i =0; i < Cp.size(); i++){
+                MCp[i] = Cp[i] * 0.55555555556 * 60.0;
+            }
+        } else if (B == 6.) {
+            for (int i =0; i < Cp.size(); i++){
+                MCp[i] = Cp[i] * 0.55555555556 * 3600.0;
+            }
+        } else if (B == 7) {
+            for (int i =0; i < Cp.size(); i++){
+                MCp[i] = Cp[i];
+            }
+        } else if (B == 8) {
+            for (int i =0; i < Cp.size(); i++){
+                MCp[i] = Cp[i] * 60.0;
+            }
+        } else if (B == 9){
+            for (int i =0; i < Cp.size(); i++){
+                MCp[i] = Cp[i] * 3600.0;
+            }
+        }
+    } else {
+        if (SIN == 1) {
+            // SISTEMA INTERNACIONAL
+            //  CONVIERTE LAS TEMPERATURAS A UNIDADES DE �C
+            //  WCP A UNIDADES DE BTU/HR�F
+            //  H SIGUE CONSTANTE BTU/HR FT^2 �F
+            // CONVERSION DE TEMPERATURA DE ENTRADA Y OBJETIVO
+            if (A == 1) {
+                // Conversi�n de Kelvin a Celsius
+                for (int i =0; i < ST.size(); i++){
+                    MST[i] = ST[i] + 273.15;
+                    MTT[i] = TT[i] + 273.15;
+                }
+            } else if (A == 2) {
+                // Conversi�n de Farenheit a Celsius
+                for (int i =0; i < ST.size(); i++){
+                    MST[i] = ST[i] * 1.8 + 32.0;
+                    MTT[i] = TT[i] * 1.8 + 32.0;
+                }
+            } else if (A == 3) {
+                // Conversi�n de Celsius a Celsius
+                for (int i =0; i < ST.size(); i++){
+                    MST[i] = ST[i];
+                    MTT[i] = TT[i];
+                }
+            } else if (A == 4){
+                // Conversi�n de Ranking a Celsius
+                for (int i =0; i < ST.size(); i++){
+                    MST[i] = (MST[i] + 273.15) * 1.8;
+                    MTT[i] = (MTT[i] + 273.15) * 1.8;
+                }
+            }
+            //  CONVERCI�N DE WCP
+            if (B == 1) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] / 3600.0;
+                }
+            } else if (B == 2) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] / 60.0;
+                }
+            } else if (B == 3) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i];
+                }
+            } else if (B == 4) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] / 3600.0;
+                }
+            } else if (B == 5) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] / 60.0;
+                }
+            } else if (B == 6) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i];
+                }
+            } else if (B == 7) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] * 1000.0 / 3600.0;
+                }
+            } else if (B == 8) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] * 1000.0 / 60.0;
+                }
+            } else if (B == 9) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] * 1000.0;
+                }
+            } else if (B == 10) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] * 1000.0 / 3600.0;
+                }
+            } else if (B == 11) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] * 1000.0 / 60.0;
+                }
+            } else if (B == 12) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i]* 1000.0;
+                }
+            } else if (B == 13) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] * 4186.8 / 3600.0;
+                }
+            } else if (B == 14) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i] * 4186.8 / 60.0;
+                }
+            } else if (B == 15) {
+                for (int i =0; i < Cp.size(); i++){
+                    MCp[i] = Cp[i]* 4186.8;
+                }
+            }
+        }
+    }
+}
+
+QVector<double> Unidades::getST()
+{
+    return MST;
+}
+
+QVector<double> Unidades::getTT()
+{
+    return MTT;
+}
+
+QVector<double> Unidades::getCp()
+{
+    return MCp;
+}
+
 Tabplot::Tabplot(int tabvalue)
 {
     Mtabvalue = tabvalue;
@@ -104,25 +297,6 @@ int Tabplot::gettabvalue()
     return Mtabvalue;
 }
 
-//FALTA POR DEFINIR LAS OPERACIONES
-
-Operaciones::Operaciones(int tabval, int method, int analisis, int dtmin, int maximo, int minimo,
-                         int k, QVector<QVector<double> > Matriz)
-{
-    Mtabval= tabval;
-    Mmethod= method;
-    Manalisis = analisis;
-    Mdtmin = dtmin;
-    Mmaximo = maximo;
-    Mminimo = minimo;
-    Mk = k;
-    MMatriz = Matriz;
-}
-
-//void Operaciones::operaciones(int tipo, int method, int analisis, int dtmin, int maximo, int minimo, int k, QVector<QVector<double> > Matriz)
-//{
-//    // aun si declarar nada
-//}
 
 QDataStream &operator<<(QDataStream &out1, const Duvaloraction &valoraction)
 {

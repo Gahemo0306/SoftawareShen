@@ -3,7 +3,9 @@
 #include <QDataStream>
 #include <QVector>
 #include <QDebug>
-//FUNCIONAS
+#include <qalgorithms.h>
+
+//FUNCIONA
 class Duvaloraction
 {
 public:
@@ -48,17 +50,23 @@ public:
     int getUTemp();
     int getUWcp();
     int getUh();
+    void ConvertirUnidades(QVector<double> ST, QVector<double> TT, QVector<double> Cp, bool SI, bool SIN, int A, int B);
+    QVector<double> getST();
+    QVector<double> getTT();
+    QVector<double> getCp();
     //VOID CONVERTIR UNIDAES
     friend QDataStream &operator<<(QDataStream &out3, const Unidades &units);
     friend QDataStream &operator>>(QDataStream &in3, Unidades &units);
 
 private:
+    QVector<double> MST,MTT,MCp,Mh;
     bool MSI,MSIS;
-    int  MUTemp,MUWcp,MUh;
+    int  MUTemp,MUWcp,MUh, MA, MB ,MC;
 };
 QDataStream &operator<<(QDataStream &out3, const Unidades &units);
 QDataStream &operator>>(QDataStream &in3, Unidades &units);
 
+//FUNCIONA
 
 class Tabplot
 {
@@ -74,7 +82,7 @@ private:
 QDataStream &operator<<(QDataStream &out4, const Tabplot &tabvalue);
 QDataStream &operator>>(QDataStream &in4, Tabplot &tabvalue);
 
-//NIIDEA
+//FUNCIONA
 
 class Valordeoperacion
 {
@@ -90,17 +98,6 @@ private:
 QDataStream &operator<<(QDataStream &out5, const Valordeoperacion &valor);
 QDataStream &operator>>(QDataStream &in5, Valordeoperacion &valor);
 
-// NI IDEA
-class Operaciones
-{
-public:
-    Operaciones(int tabval,int method,int analisis,int dtmin,int maximo,int minimo,int k,QVector<QVector<double>> Matriz);
-    //void operaciones(int tipo,int method,int analisis,int dtmin,int maximo,int minimo,int k,QVector<QVector<double>> Matriz);
-private:
-    int Mtabval,Mmethod,Manalisis,Mdtmin,Mmaximo,Mminimo,Mk,Mtipo;
-    QVector<QVector<double>> MMatriz;
-};
-//DUVALORACTION
 
 
 #endif // DUVALORACTION_H

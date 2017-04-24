@@ -57,12 +57,26 @@ TablaDatos::TablaDatos(QWidget *parent) :
                     QTextStream in(&file);
                     QStringList Almacenador;
                     //ui->Workspace->setRowCount(lineindex);
+                    //disconnect(ui->TcomboBox, SIGNAL(currentIndexChanged(int)), 0, 0);
+                    //disconnect(ui->WcomboBox, SIGNAL(currentIndexChanged(int)), 0, 0);
+                    //disconnect(ui->FcomboBox, SIGNAL(currentIndexChanged(int)), 0, 0);
                     while (!in.atEnd()) {
                         if(contadorlines==1){
                             QString fileLine = in.readLine();
                             QStringList lineToken = fileLine.split(",", QString::SkipEmptyParts);
                             QString analisis = lineToken.at(0);
                             int ANALISIS = analisis.toInt();
+                            QFile F(TYPEOPERATION_FILENAME);
+                            if (!F.open(QIODevice::WriteOnly)){
+                                QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+                                return;
+                            }
+                            QDataStream out5(&F);
+                            out5.setVersion(QDataStream::Qt_5_4);
+                            Valordeoperacion valor(ANALISIS);
+                            out5 << valor;
+                            F.flush();
+                            F.close();
                             if(ANALISIS==1 ){ // regresa tabla problema
                                 Properties = 3;
                             }else if(ANALISIS>=2){
@@ -160,6 +174,9 @@ TablaDatos::TablaDatos(QWidget *parent) :
                         contadorlines++;
                     }
                     file.close();
+                    //connect(ui->TcomboBox, &QComboBox::currentIndexChanged,this, &TablaDatos::on_TcomboBox_currentIndexChanged);
+                    //connect(ui->WcomboBox, &QComboBox::currentIndexChanged,this, &TablaDatos::on_WcomboBox_currentIndexChanged);
+                    //connect(ui->FcomboBox, &QComboBox::currentIndexChanged,this, &TablaDatos::on_FcomboBox_currentIndexChanged);
                     disconnect(ui->Workspace, SIGNAL(cellChanged(int,int)), 0, 0);
                     int filas = Almacenador.size()/Properties;
                     int columnas = Properties;
@@ -784,6 +801,17 @@ void TablaDatos::on_listView_doubleClicked(const QModelIndex &index)
                     QStringList lineToken = fileLine.split(",", QString::SkipEmptyParts);
                     QString analisis = lineToken.at(0);
                     int ANALISIS = analisis.toInt();
+                    QFile F(TYPEOPERATION_FILENAME);
+                    if (!F.open(QIODevice::WriteOnly)){
+                        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+                        return;
+                    }
+                    QDataStream out5(&F);
+                    out5.setVersion(QDataStream::Qt_5_4);
+                    Valordeoperacion valor(ANALISIS);
+                    out5 << valor;
+                    F.flush();
+                    F.close();
                     if(ANALISIS==1 ){ // regresa tabla problema
                         Properties = 3;
                     }else if(ANALISIS>=2){
@@ -1079,6 +1107,60 @@ void TablaDatos::on_Workspace_cellChanged(int row, int column)
     out3.setVersion(QDataStream::Qt_5_4);
     int ITemp = ui->TcomboBox->currentIndex(), IWcp = ui->WcomboBox->currentIndex();
     int Ih  = ui->FcomboBox->currentIndex();
+    bool SI = ui->SIradioButton->isChecked(), SIS = ui->SISradioButton->isChecked();
+    Unidades units(SI,SIS,ITemp,IWcp,Ih);
+    out3 << units;
+    FileUnidades.flush();
+    FileUnidades.close();
+}
+
+void TablaDatos::on_TcomboBox_currentIndexChanged(int index)
+{
+    QFile FileUnidades(UNIDADES_FILENAME);
+    if (!FileUnidades.open(QIODevice::WriteOnly)){
+        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+        return;
+    }
+    QDataStream out3(&FileUnidades);
+    out3.setVersion(QDataStream::Qt_5_4);
+    int ITemp = index, IWcp = ui->WcomboBox->currentIndex();
+    int Ih  = ui->FcomboBox->currentIndex();
+    bool SI = ui->SIradioButton->isChecked(), SIS = ui->SISradioButton->isChecked();
+    Unidades units(SI,SIS,ITemp,IWcp,Ih);
+    out3 << units;
+    FileUnidades.flush();
+    FileUnidades.close();
+}
+
+void TablaDatos::on_WcomboBox_currentIndexChanged(int index)
+{
+    QFile FileUnidades(UNIDADES_FILENAME);
+    if (!FileUnidades.open(QIODevice::WriteOnly)){
+        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+        return;
+    }
+    QDataStream out3(&FileUnidades);
+    out3.setVersion(QDataStream::Qt_5_4);
+    int ITemp = ui->TcomboBox->currentIndex(), IWcp = index;
+    int Ih  = ui->FcomboBox->currentIndex();
+    bool SI = ui->SIradioButton->isChecked(), SIS = ui->SISradioButton->isChecked();
+    Unidades units(SI,SIS,ITemp,IWcp,Ih);
+    out3 << units;
+    FileUnidades.flush();
+    FileUnidades.close();
+}
+
+void TablaDatos::on_FcomboBox_currentIndexChanged(int index)
+{
+    QFile FileUnidades(UNIDADES_FILENAME);
+    if (!FileUnidades.open(QIODevice::WriteOnly)){
+        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+        return;
+    }
+    QDataStream out3(&FileUnidades);
+    out3.setVersion(QDataStream::Qt_5_4);
+    int ITemp = ui->TcomboBox->currentIndex(), IWcp = ui->WcomboBox->currentIndex();
+    int Ih  = index;
     bool SI = ui->SIradioButton->isChecked(), SIS = ui->SISradioButton->isChecked();
     Unidades units(SI,SIS,ITemp,IWcp,Ih);
     out3 << units;
