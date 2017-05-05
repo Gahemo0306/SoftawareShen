@@ -33,7 +33,12 @@ SOURCES += main.cpp\
     summary.cpp \
     qcustomplot.cpp \
     contenido_plots.cpp \
-    graficos.cpp
+    graficos.cpp \
+    contenido_plots_area.cpp \
+    contenido_plots_cc.cpp \
+    contenido_plots_costos.cpp \
+    plotter.cpp \
+    problemtable.cpp
 
 HEADERS  += ventanaprincipal.h \
     unidadesentrada.h \
@@ -46,7 +51,12 @@ HEADERS  += ventanaprincipal.h \
     qcustomplot.h \
     contenido_plots.h \
     qalgorithms.h \
-    graficos.h
+    graficos.h \
+    contenido_plots_area.h \
+    contenido_plots_cc.h \
+    contenido_plots_costos.h \
+    plotter.h \
+    problemtable.h
 
 FORMS    += ventanaprincipal.ui \
     unidadesentrada.ui \
@@ -54,7 +64,12 @@ FORMS    += ventanaprincipal.ui \
     analisispersonalizado.ui \
     plots.ui \
     summary.ui \
-    contenido_plots.ui
+    contenido_plots.ui \
+    contenido_plots_area.ui \
+    contenido_plots_cc.ui \
+    contenido_plots_costos.ui \
+    plotter.ui \
+    problemtable.ui
 
 RESOURCES += resources.qrc
 

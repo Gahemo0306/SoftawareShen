@@ -98,6 +98,239 @@ private:
 QDataStream &operator<<(QDataStream &out5, const Valordeoperacion &valor);
 QDataStream &operator>>(QDataStream &in5, Valordeoperacion &valor);
 
+class VecPlot_CurvasCompuestas
+{
+public:
+    VecPlot_CurvasCompuestas(bool uniforme, bool diverso, bool estatico, bool incremento,
+                             QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                             QVector<double> &h,
+                             double Min, double Max,
+                             double Inc, double K);
+    //,uniforme,diverso,estatico,incremento,TS,TE,Wcp
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    double getMin() const;
+    double getMax() const;
+    double getInc() const;
+    double getK() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    QVector<double> geth() const;
+    friend QDataStream &operator<<(QDataStream &out6, const VecPlot_CurvasCompuestas &VecCC);
+    friend QDataStream &operator>>(QDataStream &in6, VecPlot_CurvasCompuestas &VecCC);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+    double MMin,MMax,MInc,MK;
+    QVector<double> MTS;
+    QVector<double> MTE;
+    QVector<double> MWCP;
+    QVector<double> Mh;
+};
+QDataStream &operator<<(QDataStream &out6, const VecPlot_CurvasCompuestas &VecCC);
+QDataStream &operator>>(QDataStream &in6, VecPlot_CurvasCompuestas &VecCC);
 
+class VecPlot_CurvasCompuestasAjustadasEstatico
+{
+public:
+    VecPlot_CurvasCompuestasAjustadasEstatico(bool uniforme, bool diverso, bool estatico, bool incremento,
+                             QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                             double DTmin);
+    //,uniforme,diverso,estatico,incremento,TS,TE,Wcp
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    double getDTmin() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    friend QDataStream &operator<<(QDataStream &out7, const VecPlot_CurvasCompuestasAjustadasEstatico &VecCCAE);
+    friend QDataStream &operator>>(QDataStream &in7, VecPlot_CurvasCompuestasAjustadasEstatico &VecCCAE);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+    double MDTmin;
+    QVector<double> MTS;
+    QVector<double> MTE;
+    QVector<double> MWCP;
+};
+QDataStream &operator<<(QDataStream &out7, const VecPlot_CurvasCompuestasAjustadasEstatico &VecCCAE);
+QDataStream &operator>>(QDataStream &in7, VecPlot_CurvasCompuestasAjustadasEstatico &VecCCAE);
+
+class VecPlot_CurvasCompuestasAjustadasIncremento
+{
+public:
+    VecPlot_CurvasCompuestasAjustadasIncremento(bool uniforme, bool diverso, bool estatico, bool incremento,
+                             QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                             double Min, double Max, double Inc);
+    //,uniforme,diverso,estatico,incremento,TS,TE,Wcp
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    double getMin() const;
+    double getMax() const;
+    double getInc() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    friend QDataStream &operator<<(QDataStream &out8, const VecPlot_CurvasCompuestasAjustadasIncremento &VecCCAI);
+    friend QDataStream &operator>>(QDataStream &in8, VecPlot_CurvasCompuestasAjustadasIncremento &VecCCAI);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+    double MMin,MMax,MInc;
+    QVector<double> MTS;
+    QVector<double> MTE;
+    QVector<double> MWCP;
+};
+QDataStream &operator<<(QDataStream &out8, const VecPlot_CurvasCompuestasAjustadasIncremento &VecCCAI);
+QDataStream &operator>>(QDataStream &in8, VecPlot_CurvasCompuestasAjustadasIncremento &VecCCAI);
+
+class VecPlot_CurvasCompuestasAjustadasbool
+{
+public:
+    VecPlot_CurvasCompuestasAjustadasbool(bool uniforme, bool diverso, bool estatico, bool incremento);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    friend QDataStream &operator<<(QDataStream &out9, const VecPlot_CurvasCompuestasAjustadasbool &VecCCAB);
+    friend QDataStream &operator>>(QDataStream &in9, VecPlot_CurvasCompuestasAjustadasbool &VecCCAB);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+};
+QDataStream &operator<<(QDataStream &out9, const VecPlot_CurvasCompuestasAjustadasbool &VecCCAB);
+QDataStream &operator>>(QDataStream &in9, VecPlot_CurvasCompuestasAjustadasbool &VecCCAB);
+
+class VecGCCbool
+{
+public:
+    VecGCCbool(bool uniforme, bool diverso, bool estatico, bool incremento);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    friend QDataStream &operator<<(QDataStream &out10, const VecGCCbool &VecGCCbools);
+    friend QDataStream &operator>>(QDataStream &in10, VecGCCbool &VecGCCbools);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+};
+QDataStream &operator<<(QDataStream &out10, const VecGCCbool &VecGCCbools);
+QDataStream &operator>>(QDataStream &in10, VecGCCbool &VecGCCbools);
+
+class VecGCCestatico
+{
+public:
+    VecGCCestatico(bool uniforme, bool diverso, bool estatico, bool incremento,
+                             QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                             double DTmin);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    double getDTmin() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    friend QDataStream &operator<<(QDataStream &out11, const VecGCCestatico &VecGCest);
+    friend QDataStream &operator>>(QDataStream &in11, VecGCCestatico &VecGCest);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+    double MDTmin;
+    QVector<double> MTS;
+    QVector<double> MTE;
+    QVector<double> MWCP;
+};
+QDataStream &operator<<(QDataStream &out11, const VecGCCestatico &VecGCest);
+QDataStream &operator>>(QDataStream &in11, VecGCCestatico &VecGCest);
+
+class VecGCCdinamico
+{
+public:
+    VecGCCdinamico(bool uniforme, bool diverso, bool estatico, bool incremento,
+                             QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                             double Min, double Max,double Inc);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    double getMin() const;
+    double getMax() const;
+    double getInc() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    friend QDataStream &operator<<(QDataStream &out12, const VecGCCdinamico &VecGCdin);
+    friend QDataStream &operator>>(QDataStream &in12, VecGCCdinamico &VecGCdin);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+    double MMin,MMax,MInc;
+    QVector<double> MTS;
+    QVector<double> MTE;
+    QVector<double> MWCP;
+};
+QDataStream &operator<<(QDataStream &out12, const VecGCCdinamico &VecGCdin);
+QDataStream &operator>>(QDataStream &in12, VecGCCdinamico &VecGCdin);
+
+class VecPlot_CCAjustadasEst_Diversa
+{
+public:
+    VecPlot_CCAjustadasEst_Diversa(bool uniforme, bool diverso, bool estatico, bool incremento,
+                                   QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                                   QVector<double> &h, double DTmin,double K);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    double getDTmin() const;
+    double getK() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    QVector<double> geth() const;
+    friend QDataStream &operator<<(QDataStream &out13, const VecPlot_CCAjustadasEst_Diversa &VecCCAED);
+    friend QDataStream &operator>>(QDataStream &in13, VecPlot_CCAjustadasEst_Diversa &VecCCAED);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+    double MDTmin;
+    double MK;
+    QVector<double> MTS;
+    QVector<double> MTE;
+    QVector<double> MWCP;
+    QVector<double> Mh;
+};
+QDataStream &operator<<(QDataStream &out13, const VecPlot_CCAjustadasEst_Diversa &VecCCAED);
+QDataStream &operator>>(QDataStream &in13, VecPlot_CCAjustadasEst_Diversa &VecCCAED);
+
+
+class VecPlot_CCAjustadasInc_Diversa
+{
+public:
+    VecPlot_CCAjustadasInc_Diversa(bool uniforme, bool diverso, bool estatico, bool incremento,
+                                   QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                                   QVector<double> &h, double min, double max, double inc ,double K);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    double getMin() const;
+    double getMax() const;
+    double getInc() const;
+    double getK() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    QVector<double> geth() const;
+    friend QDataStream &operator<<(QDataStream &out14, const VecPlot_CCAjustadasInc_Diversa &VecCCAID);
+    friend QDataStream &operator>>(QDataStream &in14, VecPlot_CCAjustadasInc_Diversa &VecCCAID);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+    double MMin,MMax,MInc,MK;
+    QVector<double> MTS,MTE,MWCP,Mh;
+};
+QDataStream &operator<<(QDataStream &out14, const VecPlot_CCAjustadasInc_Diversa &VecCCAID);
+QDataStream &operator>>(QDataStream &in14, VecPlot_CCAjustadasInc_Diversa &VecCCAID);
 
 #endif // DUVALORACTION_H

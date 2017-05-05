@@ -1059,10 +1059,10 @@ void TablaDatos::on_UploadExistinpushButton_clicked()
 
 void TablaDatos::on_Workspace_cellChanged(int row, int column)
 {
-    int r = ui->Workspace->rowCount();
-    int c = ui->Workspace->columnCount();
-    for(int i = 0; i < r ; i++){
-        for(int j = 0; j < c ; j++){
+    row = ui->Workspace->rowCount();
+    column = ui->Workspace->columnCount();
+    for(int i = 0; i < row ; i++){
+        for(int j = 0; j < column ; j++){
             if (!ui->Workspace->item(i,j)){
                return;
             }else if (ui->Workspace->item(i,j)->text() == "Empty"){

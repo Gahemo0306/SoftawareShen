@@ -17,6 +17,7 @@
 #include "analisispersonalizado.h"
 #include "plots.h"
 #include "summary.h"
+#include "problemtable.h"
 
 VentanaPrincipal::VentanaPrincipal(QWidget *parent) :
     QMainWindow(parent),
@@ -26,10 +27,6 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent) :
     setCentralWidget(ui->mdiArea);
     setWindowTitle("Software Heat Exchanger Network ");
     loadSubWindowPrincipal(new UnidadesEntrada(this));
-
-    //connect(ui->actionNew,SIGNAL(triggered(bool)),this,SIGNAL(actionNewAC(int)));
-    //connect(ui->actionNew,SIGNAL(),this,SLOT());
-    //connect(ui)
 }
 
 VentanaPrincipal::~VentanaPrincipal()
@@ -59,6 +56,9 @@ void VentanaPrincipal::loadSubWindow(QWidget *widget,int ValorACTION)
     else if (ValorACTION == 5){ //SUMMARY
         Titulo = "Report Options";
         RutaIcono = "";
+    }else if (ValorACTION == 6){
+        Titulo = "Problem Table";
+        RutaIcono = ":/resources/Resources/table-icon-png-2.png";
     }
     auto window = ui->mdiArea->addSubWindow(widget);
     window->setWindowTitle(Titulo);
@@ -101,6 +101,8 @@ void VentanaPrincipal::on_actionNew_triggered() //NEW
 }
 
 
+
+
 void VentanaPrincipal::on_actionOpen_triggered()
 {
     int ValorACTION = 2;
@@ -140,6 +142,7 @@ void VentanaPrincipal::on_actionCustom_Analysis_triggered()
     loadSubWindow(new AnalisisPersonalizado(this),ValorACTION);
 }
 
+
 void VentanaPrincipal::on_actionPlots_triggered()
 {
     int ValorACTION = 4;
@@ -150,4 +153,10 @@ void VentanaPrincipal::on_actionReport_Options_triggered()
 {
     int ValorACTION = 5;
     loadSubWindow(new Summary(this),ValorACTION);
+}
+
+void VentanaPrincipal::on_actionProblem_Table_triggered()
+{
+    int ValorACTION = 6;
+    loadSubWindow(new problemtable(this),ValorACTION);
 }

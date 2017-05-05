@@ -1,17 +1,16 @@
 #include "duvaloraction.h"
 #include "valoraction.h"
 #include "graficos.h"
+#include "qcustomplot.h"
 #include "contenido_plots.h"
 #include "ui_contenido_plots.h"
-#include "qcustomplot.h"
 
 Contenido_PLOTS::Contenido_PLOTS(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Contenido_PLOTS)
 {
     ui->setupUi(this);
-    ui->qcustomplot->setVisible(false);
-    ui->qcustomplot->setEnabled(false);
+    ui->groupBox_3->setVisible(false);
     ui->Utext1->setVisible(false);
     ui->Utext2->setVisible(false);
     ui->Utext3->setVisible(false);
@@ -20,9 +19,6 @@ Contenido_PLOTS::Contenido_PLOTS(QWidget *parent) :
     ui->Maximun->setVisible(false);
     ui->Increment->setVisible(false);
     ui->k->setVisible(false);
-    ui->plot_push->setVisible(false);
-    ui->holdon_push->setVisible(false);
-    ui->export_push->setVisible(false);
 }
 
 Contenido_PLOTS::~Contenido_PLOTS()
@@ -52,6 +48,7 @@ void Contenido_PLOTS::on_IncrementradioButton_clicked()
 
 void Contenido_PLOTS::RADIOBUTTONS()
 {
+    ui->groupBox_3->setVisible(false);
     ui->Utext1->setVisible(false);
     ui->Utext2->setVisible(false);
     ui->Utext3->setVisible(false);
@@ -60,29 +57,26 @@ void Contenido_PLOTS::RADIOBUTTONS()
     ui->Maximun->setVisible(false);
     ui->Increment->setVisible(false);
     ui->k->setVisible(false);
-    ui->plot_push->setVisible(false);
-    ui->holdon_push->setVisible(false);
-    ui->export_push->setVisible(false);
     bool uniforme = ui->Uniforme->isChecked();
     bool diverso = ui->Diverso->isChecked();
     bool estatico = ui->StaticradioButton->isChecked();
     bool incremento = ui->IncrementradioButton->isChecked();
     if(uniforme == true && estatico == true){
-        ui->Utext1->setVisible(true);  //value o maximo
-        ui->Utext2->setVisible(false); //minimo
-        ui->Utext3->setVisible(false); //incremento
+        ui->groupBox_3->setVisible(true);
         ui->Utext4->setVisible(false); //k
+        ui->Utext1->setVisible(true);  //minimo
+        ui->Utext2->setVisible(false); //maximo
+        ui->Utext3->setVisible(false); //incremento
         ui->Utext1->setText("Value:");
         ui->Minimun->setVisible(true);
         ui->Maximun->setVisible(false);
         ui->Increment->setVisible(false);
         ui->k->setVisible(false);
-        ui->plot_push->setVisible(true);
-        ui->holdon_push->setVisible(true);
-        ui->export_push->setVisible(true);
+        accionguardar();
     }else if(uniforme == true && incremento == true){
-        ui->Utext1->setVisible(true);  //value o maximo
-        ui->Utext2->setVisible(true); //minimo
+        ui->groupBox_3->setVisible(true);
+        ui->Utext1->setVisible(true);  //minmo
+        ui->Utext2->setVisible(true); //maximo
         ui->Utext3->setVisible(true); //incremento
         ui->Utext4->setVisible(false); //k
         ui->Utext1->setText("Minimun value:");
@@ -90,36 +84,31 @@ void Contenido_PLOTS::RADIOBUTTONS()
         ui->Maximun->setVisible(true);
         ui->Increment->setVisible(true);
         ui->k->setVisible(false);
-        ui->plot_push->setVisible(true);
-        ui->holdon_push->setVisible(true);
-        ui->export_push->setVisible(true);
+        accionguardar();
     }else if(diverso == true && estatico == true){
-        ui->Utext1->setVisible(true);  //value o maximo
-        ui->Utext2->setVisible(false); //minimo
+        ui->groupBox_3->setVisible(true);
+        ui->Utext1->setVisible(true);  //minimo
+        ui->Utext2->setVisible(false); //maximo
         ui->Utext3->setVisible(false); //incremento
         ui->Utext4->setVisible(true); //k
         ui->Utext1->setText("Value:");
-        //ui->Utext2->setText("");
         ui->Minimun->setVisible(true);
         ui->Maximun->setVisible(false);
         ui->Increment->setVisible(false);
         ui->k->setVisible(true);
-        ui->plot_push->setVisible(true);
-        ui->holdon_push->setVisible(true);
-        ui->export_push->setVisible(true);
+        accionguardar();
     }else if(diverso == true && incremento == true){
-        ui->Utext1->setVisible(true);
-        ui->Utext2->setVisible(true);
-        ui->Utext3->setVisible(true);
-        ui->Utext4->setVisible(true);
+        ui->groupBox_3->setVisible(true);
+        ui->Utext1->setVisible(true);//minimo
+        ui->Utext2->setVisible(true);//maximo
+        ui->Utext3->setVisible(true);//incremento
+        ui->Utext4->setVisible(true);//k
         ui->Utext1->setText("Minimun value:");
         ui->Minimun->setVisible(true);
         ui->Maximun->setVisible(true);
         ui->Increment->setVisible(true);
         ui->k->setVisible(true);
-        ui->plot_push->setVisible(true);
-        ui->holdon_push->setVisible(true);
-        ui->export_push->setVisible(true);
+        accionguardar();
     }else if(uniforme == false || diverso == false){
         ui->Utext1->setVisible(false);
         ui->Utext2->setVisible(false);
@@ -129,14 +118,36 @@ void Contenido_PLOTS::RADIOBUTTONS()
         ui->Maximun->setVisible(false);
         ui->Increment->setVisible(false);
         ui->k->setVisible(false);
-        ui->plot_push->setVisible(false);
-        ui->holdon_push->setVisible(false);
-        ui->export_push->setVisible(false);
     }
 }
 
-void Contenido_PLOTS::on_plot_push_clicked()
+
+void Contenido_PLOTS::on_k_valueChanged()
 {
+    accionguardar();
+}
+
+void Contenido_PLOTS::on_Minimun_valueChanged()
+{
+    accionguardar();
+}
+
+void Contenido_PLOTS::on_Maximun_valueChanged()
+{
+    accionguardar();
+}
+
+void Contenido_PLOTS::on_Increment_valueChanged()
+{
+    accionguardar();
+}
+
+void Contenido_PLOTS::accionguardar()
+{
+    bool uniforme = ui->Uniforme->isChecked();
+    bool diverso = ui->Diverso->isChecked();
+    bool estatico = ui->StaticradioButton->isChecked();
+    bool incremento = ui->IncrementradioButton->isChecked();
     QFile F(WORKSPACE_FILENAME);
     if (!F.open(QIODevice::ReadOnly)){
         QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
@@ -153,7 +164,7 @@ void Contenido_PLOTS::on_plot_push_clicked()
         prueba[i].resize(columnas);
     }
     Workspace MATRIZ(prueba);
-    in2>> MATRIZ;
+    in2 >> MATRIZ;
     QVector<QVector<double>> Matriz = MATRIZ.getMatriz();
     QVector<double> TS(Matriz.size()),TE(Matriz.size());
     QVector<double> Wcp(Matriz.size()),h(Matriz.size());
@@ -163,6 +174,27 @@ void Contenido_PLOTS::on_plot_push_clicked()
         Wcp[i] = Matriz[i][2];
         h[i] = Matriz[i][3];
     }
+    F.flush();
+    F.close();
+    QFile FileUnidades(UNIDADES_FILENAME);
+    if (!FileUnidades.open(QIODevice::ReadOnly)){
+        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+        return;
+    }
+    QDataStream in3(&FileUnidades);
+    in3.setVersion(QDataStream::Qt_5_4);
+    Unidades units;
+    in3 >> units;
+    int UTemp = units.getUTemp();
+    int UWcp = units.getUWcp();;
+    bool SI = units.getSI();
+    bool SIS = units.getSIS();
+    units.ConvertirUnidades(TS,TE,Wcp,SI,SIS,UTemp,UWcp);
+    TS = units.getST();
+    TE = units.getTT();
+    Wcp = units.getCp();
+    FileUnidades.flush();
+    FileUnidades.close();
     QFile Fil(TABPLOT_FILENAME);
     if (!Fil.open(QIODevice::ReadOnly)){
         QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
@@ -175,63 +207,164 @@ void Contenido_PLOTS::on_plot_push_clicked()
     int ventanaplot = tabvalue.gettabvalue();
     Fil.flush();
     Fil.close();
-    QFile FileUnidades(UNIDADES_FILENAME);
-    if (!FileUnidades.open(QIODevice::ReadOnly)){
-        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
-        return;
+    if(ventanaplot == 1) // curvas compuestas ajustadas)
+    {
+        if(uniforme == true && estatico == true){
+            QFile FileBools(VECPLOTCURVASCOMPUESTASAJUSTADAS_BOOL_FILENAME);
+                if (!FileBools.open(QIODevice::WriteOnly)){
+                    QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out9(&FileBools);
+            out9.setVersion(QDataStream::Qt_5_4);
+            VecPlot_CurvasCompuestasAjustadasbool VecCCAB(uniforme,diverso,estatico,incremento);
+            out9 << VecCCAB;
+            FileBools.flush();
+            FileBools.close();
+            QFile FileVec(VECPLOTCURVASCOMPUESTASAJUSTADASESTATICO_FILENAME);
+            if (!FileVec.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out7(&FileVec);
+            out7.setVersion(QDataStream::Qt_5_4);
+            DTmin = ui->Minimun->value();
+            VecPlot_CurvasCompuestasAjustadasEstatico VecCCAE(uniforme,diverso,estatico,incremento,TS,TE,Wcp,DTmin);
+            out7 << VecCCAE;
+            FileVec.flush();
+            FileVec.close();
+        }else if(uniforme == true && incremento == true){
+            QFile FileBools(VECPLOTCURVASCOMPUESTASAJUSTADAS_BOOL_FILENAME);
+            if (!FileBools.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out9(&FileBools);
+            out9.setVersion(QDataStream::Qt_5_4);
+            VecPlot_CurvasCompuestasAjustadasbool VecCCAB(uniforme,diverso,estatico,incremento);
+            out9 << VecCCAB;
+            FileBools.flush();
+            FileBools.close();
+            QFile FileVec(VECPLOTCURVASCOMPUESTASAJUSTADASDINAMICO_FILENAME);
+            if (!FileVec.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out8(&FileVec);
+            out8.setVersion(QDataStream::Qt_5_4);
+            Min = ui->Minimun->value();
+            Max = ui->Maximun->value();
+            Inc = ui->Increment->value();
+            VecPlot_CurvasCompuestasAjustadasIncremento Vec(uniforme,diverso,estatico,incremento,TS,TE,Wcp,Min,Max,Inc);
+            out8 << Vec;
+            FileVec.flush();
+            FileVec.close();
+        }else if(diverso == true && estatico == true){
+            QFile FileBools(VECPLOTCURVASCOMPUESTASAJUSTADAS_BOOL_FILENAME);
+                if (!FileBools.open(QIODevice::WriteOnly)){
+                    QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out9(&FileBools);
+            out9.setVersion(QDataStream::Qt_5_4);
+            VecPlot_CurvasCompuestasAjustadasbool VecCCAB(uniforme,diverso,estatico,incremento);
+            out9 << VecCCAB;
+            FileBools.flush();
+            FileBools.close();
+            QFile FileVec(VECPLOTCCAESTATICO_DIVERSO_FILENAME);
+            if (!FileVec.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out13(&FileVec);
+            out13.setVersion(QDataStream::Qt_5_4);
+            DTmin = ui->Minimun->value();
+            K = ui->k->value();
+            VecPlot_CCAjustadasEst_Diversa VecCCAED(uniforme,diverso,estatico,incremento,TS,TE,Wcp,h,DTmin,K);
+            out13 << VecCCAED;
+            FileVec.flush();
+            FileVec.close();
+        }else if(diverso == true && incremento == true){
+            QFile FileBools(VECPLOTCURVASCOMPUESTASAJUSTADAS_BOOL_FILENAME);
+                if (!FileBools.open(QIODevice::WriteOnly)){
+                    QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out9(&FileBools);
+            out9.setVersion(QDataStream::Qt_5_4);
+            VecPlot_CurvasCompuestasAjustadasbool VecCCAB(uniforme,diverso,estatico,incremento);
+            out9 << VecCCAB;
+            FileBools.flush();
+            FileBools.close();
+            QFile FileVec(VECPLOTCCADINAMICO_DIVERSO_FILENAME);
+            if (!FileVec.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out14(&FileVec);
+            out14.setVersion(QDataStream::Qt_5_4);
+            Min = ui->Minimun->value();
+            Max = ui->Maximun->value();
+            Inc = ui->Increment->value();
+            K = ui->k->value();
+            VecPlot_CCAjustadasInc_Diversa VecCCAID(uniforme,diverso,estatico,incremento,TS,TE,Wcp,h,Min,Max,Inc,K);
+            out14 << VecCCAID;
+            FileVec.flush();
+            FileVec.close();
+        }
+    }else if(ventanaplot == 2){ //Gran curva compuesta
+        if(uniforme == true && estatico == true){
+            QFile FileBools(VECPLOTGCC_BOOL_FILENAME);
+                if (!FileBools.open(QIODevice::WriteOnly)){
+                    QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out10(&FileBools);
+            out10.setVersion(QDataStream::Qt_5_4);
+            //VecPlot_CurvasCompuestasAjustadasbool VecCCAB(uniforme,diverso,estatico,incremento);
+            VecGCCbool VecGCCbools(uniforme,diverso,estatico,incremento);
+            out10 << VecGCCbools;
+            FileBools.flush();
+            FileBools.close();
+            QFile FileVec(VECPLOTGCCESTATICO_FILENAME);
+            if (!FileVec.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out11(&FileVec);
+            out11.setVersion(QDataStream::Qt_5_4);
+            DTmin = ui->Minimun->value();
+            VecGCCestatico VecGCest(uniforme,diverso,estatico,incremento,TS,TE,Wcp,DTmin);
+            out11 << VecGCest;
+            FileVec.flush();
+            FileVec.close();
+        }else if(uniforme == true && incremento == true){
+            QFile FileBools(VECPLOTGCC_BOOL_FILENAME);
+            if (!FileBools.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out9(&FileBools);
+            out9.setVersion(QDataStream::Qt_5_4);
+            VecPlot_CurvasCompuestasAjustadasbool VecCCAB(uniforme,diverso,estatico,incremento);
+            out9 << VecCCAB;
+            FileBools.flush();
+            FileBools.close();
+            QFile FileVec(VECPLOTGCCDINAMICO_FILENAME);
+            if (!FileVec.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out12(&FileVec);
+            out12.setVersion(QDataStream::Qt_5_4);
+            Min = ui->Minimun->value();
+            Max = ui->Maximun->value();
+            Inc = ui->Increment->value();
+            VecGCCdinamico VecGCdin(uniforme,diverso,estatico,incremento,TS,TE,Wcp,Min,Max,Inc);
+            out12 << VecGCdin;
+            FileVec.flush();
+            FileVec.close();
+        }
     }
-    QDataStream in3(&FileUnidades);
-    in3.setVersion(QDataStream::Qt_5_4);
-    Unidades units;
-    in3 >> units;
-    int UTemp = units.getUTemp();
-    int UWcp = units.getUWcp();
-    //int Uh = units.getUh();
-    bool SI = units.getSI();
-    bool SIS = units.getSIS();
-    units.ConvertirUnidades(TS,TE,Wcp,SI,SIS,UTemp,UWcp);
-    TS = units.getST();
-    TE = units.getTT();
-    Wcp = units.getCp();
-    FileUnidades.flush();
-    FileUnidades.close();
-    if(ventanaplot == 0){ // es la de curvas compuestas
-        Plot_curvascompuestas plot(TS,TE,Wcp);
-        QVector<double> CCENTALPIA = plot.getCCENTALPIA();
-        QVector<double> CCTEMPERATURAS = plot.getCCTEMPERATURAS();
-        ui->qcustomplot->setVisible(true);
-        ui->qcustomplot->setEnabled(true);
-        ui->qcustomplot->addGraph();
-        ui->qcustomplot->graph(0)->setData(CCENTALPIA,CCTEMPERATURAS);
-        ui->qcustomplot->xAxis->setLabel("ENTHALPY");
-        ui->qcustomplot->yAxis->setLabel("TEMPERATURE");
-        ui->qcustomplot->replot();
-        QVector<double> CFENTALPIA = plot.getCFENTALPIA();
-        QVector<double> CFTEMPERATURAS = plot.getCFTEMPERATURAS();
-        ui->qcustomplot->addGraph();
-        ui->qcustomplot->graph(1)->setData(CFENTALPIA,CFTEMPERATURAS);
-        ui->qcustomplot->graph(0)->rescaleAxes();
-        ui->qcustomplot->graph(1)->rescaleAxes(true);
-        ui->qcustomplot->replot();
-    }else if(ventanaplot == 1){ // es la de las curvas compuestas ajustadas
-        double DTmin = ui->Minimun->value();
-        Plot_curvascompuestasajustadas plot(TS,TE,Wcp,DTmin);
-        QVector<double> CCENTALPIA = plot.getCCENTALPIA();
-        QVector<double> CCTEMPERATURAS = plot.getCCTEMPERATURAS();
-        ui->qcustomplot->setVisible(true);
-        ui->qcustomplot->setEnabled(true);
-        ui->qcustomplot->addGraph();
-        ui->qcustomplot->graph(0)->setData(CCENTALPIA,CCTEMPERATURAS);
-        ui->qcustomplot->xAxis->setLabel("ENTHALPY");
-        ui->qcustomplot->yAxis->setLabel("TEMPERATURE");
-        ui->qcustomplot->replot();
-        QVector<double> CFENTALPIAAJUSTADAS = plot.getCFENTALPIAAJUSTADAS();
-        QVector<double> CFTEMPERATURASAJUSTADAS = plot.getCFTEMPERATURASAJUSTADAS();
-        ui->qcustomplot->addGraph();
-        ui->qcustomplot->graph(1)->setData(CFENTALPIAAJUSTADAS,CFTEMPERATURASAJUSTADAS);
-        ui->qcustomplot->graph(0)->rescaleAxes();
-        ui->qcustomplot->graph(1)->rescaleAxes(true);
-        ui->qcustomplot->replot();
-    }
-
 }
+

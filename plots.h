@@ -18,8 +18,13 @@ public:
 private slots:
     void on_tabWidget_currentChanged(int index);
 
+    void on_pushButton_clicked();
+
+    void on_tabWidget_tabCloseRequested(int index);
+
 private:
     Ui::plots *ui;
+    int K;
 };
 
 #endif // PLOTS_H

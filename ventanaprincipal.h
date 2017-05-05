@@ -35,10 +35,10 @@ private slots:
     void on_actionSave_as_triggered();
     void on_actionClose_triggered();
     void on_actionCustom_Analysis_triggered();
-
     void on_actionPlots_triggered();
-
     void on_actionReport_Options_triggered();
+
+    void on_actionProblem_Table_triggered();
 
 signals:
     void actionNew(int ValorTabla);

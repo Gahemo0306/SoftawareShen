@@ -36,10 +36,18 @@ private slots:
     void on_StaticradioButton_clicked();
     void on_IncrementradioButton_clicked();
     void RADIOBUTTONS();
-    void on_plot_push_clicked();
 
+    void on_k_valueChanged();
+
+    void on_Minimun_valueChanged();
+
+    void on_Maximun_valueChanged();
+
+    void on_Increment_valueChanged();
+    void accionguardar();
 private:
     Ui::Contenido_PLOTS *ui;
+    double DTmin,Min,Max,Inc,K;
 };
 
 #endif // CONTENIDO_PLOTS_H

@@ -351,3 +351,708 @@ QDataStream &operator>>(QDataStream &in5, Valordeoperacion &valor)
     return in5 >> valor.Mvalor;
 }
 
+
+VecPlot_CurvasCompuestas::VecPlot_CurvasCompuestas(bool uniforme, bool diverso, bool estatico, bool incremento,
+                                                   QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                                                   QVector<double> &h,
+                                                   double Min, double Max, double Inc, double K)
+{
+    MMin = Min;
+    MMax = Max;
+    MInc = Inc;
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+    MTS.resize(TS.size());
+    MTE.resize(TE.size());
+    MWCP.resize(Wcp.size());
+    Mh.resize(h.size());
+    for(int i = 0; i < TS.size(); i++){
+        MTS[i] = TS[i];
+    }
+    for(int i = 0; i < TE.size(); i++){
+        MTE[i] = TE[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        MWCP[i] = Wcp[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        Mh[i] = h[i];
+    }
+    MK = K;
+}
+
+bool VecPlot_CurvasCompuestas::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecPlot_CurvasCompuestas::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecPlot_CurvasCompuestas::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecPlot_CurvasCompuestas::getIncremmento() const
+{
+    return Mincremento;
+}
+
+double VecPlot_CurvasCompuestas::getMin() const
+{
+    return MMin;
+}
+
+double VecPlot_CurvasCompuestas::getMax() const
+{
+    return MMax;
+}
+
+double VecPlot_CurvasCompuestas::getInc() const
+{
+    return MInc;
+}
+
+double VecPlot_CurvasCompuestas::getK() const
+{
+    return MK;
+}
+
+QVector<double> VecPlot_CurvasCompuestas::getTS() const
+{
+    return MTS;
+}
+
+QVector<double> VecPlot_CurvasCompuestas::getTE() const
+{
+    return MTE;
+}
+
+QVector<double> VecPlot_CurvasCompuestas::getWCP() const
+{
+    return MWCP;
+}
+
+QVector<double> VecPlot_CurvasCompuestas::geth() const
+{
+    return Mh;
+}
+
+QDataStream &operator<<(QDataStream &out6, const VecPlot_CurvasCompuestas &VecCC)
+{
+    return out6 << VecCC.Muniforme << VecCC.Mdiverso << VecCC.Mestatico << VecCC.Mincremento
+                << VecCC.MTS << VecCC.MTE << VecCC.MWCP << VecCC.Mh << VecCC.MMin << VecCC.MMax << VecCC.MInc << VecCC.MK;
+}
+
+QDataStream &operator>>(QDataStream &in6, VecPlot_CurvasCompuestas &VecCC)
+{
+    return in6 >> VecCC.Muniforme >> VecCC.Mdiverso >> VecCC.Mestatico >> VecCC.Mincremento
+               >> VecCC.MTS >> VecCC.MTE >> VecCC.MWCP >>  VecCC.Mh >> VecCC.MMin >> VecCC.MMax >> VecCC.MInc >> VecCC.MK;
+}
+
+VecPlot_CurvasCompuestasAjustadasEstatico::VecPlot_CurvasCompuestasAjustadasEstatico(bool uniforme, bool diverso, bool estatico, bool incremento,
+                                                   QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                                                   double DTMin)
+{
+    MDTmin = DTMin;
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+    MTS.resize(TS.size());
+    MTE.resize(TE.size());
+    MWCP.resize(Wcp.size());
+    for(int i = 0; i < TS.size(); i++){
+        MTS[i] = TS[i];
+    }
+    for(int i = 0; i < TE.size(); i++){
+        MTE[i] = TE[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        MWCP[i] = Wcp[i];
+    }
+}
+
+bool VecPlot_CurvasCompuestasAjustadasEstatico::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecPlot_CurvasCompuestasAjustadasEstatico::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecPlot_CurvasCompuestasAjustadasEstatico::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecPlot_CurvasCompuestasAjustadasEstatico::getIncremmento() const
+{
+    return Mincremento;
+}
+
+double VecPlot_CurvasCompuestasAjustadasEstatico::getDTmin() const
+{
+    return MDTmin;
+}
+
+QVector<double> VecPlot_CurvasCompuestasAjustadasEstatico::getTS() const
+{
+    return MTS;
+}
+
+QVector<double> VecPlot_CurvasCompuestasAjustadasEstatico::getTE() const
+{
+    return MTE;
+}
+
+QVector<double> VecPlot_CurvasCompuestasAjustadasEstatico::getWCP() const
+{
+    return MWCP;
+}
+
+QDataStream &operator<<(QDataStream &out7, const VecPlot_CurvasCompuestasAjustadasEstatico &VecCCAE)
+{
+    return out7 << VecCCAE.Muniforme << VecCCAE.Mdiverso << VecCCAE.Mestatico << VecCCAE.Mincremento << VecCCAE.MTS
+                << VecCCAE.MTE << VecCCAE.MWCP << VecCCAE.MDTmin ;
+}
+
+QDataStream &operator>>(QDataStream &in7, VecPlot_CurvasCompuestasAjustadasEstatico &VecCCAE)
+{
+    return in7 >> VecCCAE.Muniforme >> VecCCAE.Mdiverso >> VecCCAE.Mestatico >> VecCCAE.Mincremento >> VecCCAE.MTS
+               >> VecCCAE.MTE >> VecCCAE.MWCP >> VecCCAE.MDTmin ;
+}
+
+VecPlot_CurvasCompuestasAjustadasIncremento::VecPlot_CurvasCompuestasAjustadasIncremento(bool uniforme, bool diverso, bool estatico, bool incremento,
+                                                   QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                                                   double Min, double Max, double Inc)
+{
+    MMin = Min;
+    MMax = Max;
+    MInc = Inc;
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+    MTS.resize(TS.size());
+    MTE.resize(TE.size());
+    MWCP.resize(Wcp.size());
+    for(int i = 0; i < TS.size(); i++){
+        MTS[i] = TS[i];
+    }
+    for(int i = 0; i < TE.size(); i++){
+        MTE[i] = TE[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        MWCP[i] = Wcp[i];
+    }
+}
+
+bool VecPlot_CurvasCompuestasAjustadasIncremento::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecPlot_CurvasCompuestasAjustadasIncremento::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecPlot_CurvasCompuestasAjustadasIncremento::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecPlot_CurvasCompuestasAjustadasIncremento::getIncremmento() const
+{
+    return Mincremento;
+}
+
+double VecPlot_CurvasCompuestasAjustadasIncremento::getMin() const
+{
+    return MMin;
+}
+
+double VecPlot_CurvasCompuestasAjustadasIncremento::getMax() const
+{
+    return MMax;
+}
+
+double VecPlot_CurvasCompuestasAjustadasIncremento::getInc() const
+{
+    return MInc;
+}
+
+QVector<double> VecPlot_CurvasCompuestasAjustadasIncremento::getTS() const
+{
+    return MTS;
+}
+
+QVector<double> VecPlot_CurvasCompuestasAjustadasIncremento::getTE() const
+{
+    return MTE;
+}
+
+QVector<double> VecPlot_CurvasCompuestasAjustadasIncremento::getWCP() const
+{
+    return MWCP;
+}
+
+QDataStream &operator<<(QDataStream &out8, const VecPlot_CurvasCompuestasAjustadasIncremento &VecCCAI)
+{
+    return out8 << VecCCAI.Muniforme << VecCCAI.Mdiverso << VecCCAI.Mestatico << VecCCAI.Mincremento
+                << VecCCAI.MTS << VecCCAI.MTE << VecCCAI.MWCP << VecCCAI.MMin << VecCCAI.MMax << VecCCAI.MInc ;
+}
+
+QDataStream &operator>>(QDataStream &in8, VecPlot_CurvasCompuestasAjustadasIncremento &VecCCAI)
+{
+    return in8 >> VecCCAI.Muniforme >> VecCCAI.Mdiverso >> VecCCAI.Mestatico >> VecCCAI.Mincremento
+               >> VecCCAI.MTS >> VecCCAI.MTE >> VecCCAI.MWCP >> VecCCAI.MMin >> VecCCAI.MMax >> VecCCAI.MInc ;
+}
+
+VecPlot_CurvasCompuestasAjustadasbool::VecPlot_CurvasCompuestasAjustadasbool(bool uniforme, bool diverso,
+                                                                             bool estatico, bool incremento)
+{
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+}
+
+bool VecPlot_CurvasCompuestasAjustadasbool::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecPlot_CurvasCompuestasAjustadasbool::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecPlot_CurvasCompuestasAjustadasbool::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecPlot_CurvasCompuestasAjustadasbool::getIncremmento() const
+{
+    return Mincremento;
+}
+
+
+QDataStream &operator<<(QDataStream &out9, const VecPlot_CurvasCompuestasAjustadasbool &VecCCAB)
+{
+     return out9 << VecCCAB.Muniforme << VecCCAB.Mdiverso << VecCCAB.Mestatico << VecCCAB.Mincremento ;
+}
+
+QDataStream &operator>>(QDataStream &in9, VecPlot_CurvasCompuestasAjustadasbool &VecCCAB)
+{
+    return in9 >> VecCCAB.Muniforme >> VecCCAB.Mdiverso >> VecCCAB.Mestatico >> VecCCAB.Mincremento ;
+}
+
+
+
+VecGCCbool::VecGCCbool(bool uniforme, bool diverso, bool estatico, bool incremento)
+{
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+}
+
+bool VecGCCbool::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecGCCbool::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecGCCbool::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecGCCbool::getIncremmento() const
+{
+    return Mincremento;
+}
+
+QDataStream &operator<<(QDataStream &out10, const VecGCCbool &VecGCCbools)
+{
+    return out10 << VecGCCbools.Muniforme << VecGCCbools.Mdiverso << VecGCCbools.Mestatico << VecGCCbools.Mincremento ;
+}
+
+QDataStream &operator>>(QDataStream &in10, VecGCCbool &VecGCCbools)
+{
+    return in10 >> VecGCCbools.Muniforme >> VecGCCbools.Mdiverso >> VecGCCbools.Mestatico >> VecGCCbools.Mincremento ;
+}
+
+
+VecGCCestatico::VecGCCestatico(bool uniforme, bool diverso, bool estatico, bool incremento,
+                               QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp, double DTmin)
+{
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+    MDTmin = DTmin;
+    MTS.resize(TS.size());
+    MTE.resize(TE.size());
+    MWCP.resize(Wcp.size());
+    for(int i = 0; i < TS.size(); i++){
+        MTS[i] = TS[i];
+    }
+    for(int i = 0; i < TE.size(); i++){
+        MTE[i] = TE[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        MWCP[i] = Wcp[i];
+    }
+}
+
+bool VecGCCestatico::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecGCCestatico::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecGCCestatico::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecGCCestatico::getIncremmento() const
+{
+    return Mincremento;
+}
+
+double VecGCCestatico::getDTmin() const
+{
+    return MDTmin;
+}
+
+QVector<double> VecGCCestatico::getTS() const
+{
+    return MTS;
+}
+
+QVector<double> VecGCCestatico::getTE() const
+{
+    return MTE;
+}
+
+QVector<double> VecGCCestatico::getWCP() const
+{
+    return MWCP;
+}
+
+QDataStream &operator<<(QDataStream &out11, const VecGCCestatico &VecGCest)
+{
+    return out11 << VecGCest.Muniforme << VecGCest.Mdiverso << VecGCest.Mestatico << VecGCest.Mincremento
+                 << VecGCest.MDTmin << VecGCest.MTS << VecGCest.MTE << VecGCest.MWCP;
+}
+
+QDataStream &operator>>(QDataStream &in11, VecGCCestatico &VecGCest)
+{
+    return in11 >> VecGCest.Muniforme >> VecGCest.Mdiverso >> VecGCest.Mestatico >> VecGCest.Mincremento
+                >> VecGCest.MDTmin >> VecGCest.MTS >> VecGCest.MTE >> VecGCest.MWCP;
+}
+
+
+VecGCCdinamico::VecGCCdinamico(bool uniforme, bool diverso, bool estatico, bool incremento,
+                               QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                               double Min, double Max, double Inc)
+{
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+    MMin = Min;
+    MMax = Max;
+    MInc = Inc;
+    MTS.resize(TS.size());
+    MTE.resize(TE.size());
+    MWCP.resize(Wcp.size());
+    for(int i = 0; i < TS.size(); i++){
+        MTS[i] = TS[i];
+    }
+    for(int i = 0; i < TE.size(); i++){
+        MTE[i] = TE[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        MWCP[i] = Wcp[i];
+    }
+}
+
+bool VecGCCdinamico::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecGCCdinamico::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecGCCdinamico::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecGCCdinamico::getIncremmento() const
+{
+    return Mincremento;
+}
+
+double VecGCCdinamico::getMin() const
+{
+    return MMin;
+}
+
+double VecGCCdinamico::getMax() const
+{
+    return MMax;
+}
+
+double VecGCCdinamico::getInc() const
+{
+    return MInc;
+}
+
+QVector<double> VecGCCdinamico::getTS() const
+{
+    return MTS;
+}
+
+QVector<double> VecGCCdinamico::getTE() const
+{
+    return MTE;
+}
+
+QVector<double> VecGCCdinamico::getWCP() const
+{
+    return MWCP;
+}
+
+QDataStream &operator<<(QDataStream &out12, const VecGCCdinamico &VecGCdin)
+{
+    return out12 << VecGCdin.Muniforme << VecGCdin.Mdiverso << VecGCdin.Mestatico << VecGCdin.Mincremento
+                 << VecGCdin.MMin << VecGCdin.MMax << VecGCdin.MInc << VecGCdin.MTS << VecGCdin.MTE << VecGCdin.MWCP;
+}
+
+QDataStream &operator>>(QDataStream &in12, VecGCCdinamico &VecGCdin)
+{
+    return in12 >> VecGCdin.Muniforme >> VecGCdin.Mdiverso >> VecGCdin.Mestatico >> VecGCdin.Mincremento
+                >> VecGCdin.MMin >> VecGCdin.MMax >> VecGCdin.MInc >> VecGCdin.MTS >> VecGCdin.MTE >> VecGCdin.MWCP;
+}
+
+VecPlot_CCAjustadasEst_Diversa::VecPlot_CCAjustadasEst_Diversa(bool uniforme, bool diverso, bool estatico, bool incremento,
+                                                                         QVector<double> &TS, QVector<double> &TE,
+                                                                         QVector<double> &Wcp, QVector<double> &h,
+                                                                         double DTmin,double K)
+{
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+    MDTmin = DTmin;
+    MTS.resize(TS.size());
+    MTE.resize(TE.size());
+    MWCP.resize(Wcp.size());
+    Mh.resize(h.size());
+    for(int i = 0; i < TS.size(); i++){
+        MTS[i] = TS[i];
+    }
+    for(int i = 0; i < TE.size(); i++){
+        MTE[i] = TE[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        MWCP[i] = Wcp[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        Mh[i] = h[i];
+    }
+    MK = K;
+}
+
+bool VecPlot_CCAjustadasEst_Diversa::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecPlot_CCAjustadasEst_Diversa::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecPlot_CCAjustadasEst_Diversa::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecPlot_CCAjustadasEst_Diversa::getIncremmento() const
+{
+    return Mincremento;
+}
+
+double VecPlot_CCAjustadasEst_Diversa::getDTmin() const
+{
+    return MDTmin;
+}
+
+double VecPlot_CCAjustadasEst_Diversa::getK() const
+{
+    return MK;
+}
+
+QVector<double> VecPlot_CCAjustadasEst_Diversa::getTS() const
+{
+    return MTS;
+}
+
+QVector<double> VecPlot_CCAjustadasEst_Diversa::getTE() const
+{
+    return MTE;
+}
+
+QVector<double> VecPlot_CCAjustadasEst_Diversa::getWCP() const
+{
+    return MWCP;
+}
+
+QVector<double> VecPlot_CCAjustadasEst_Diversa::geth() const
+{
+    return Mh;
+}
+
+QDataStream &operator<<(QDataStream &out13, const VecPlot_CCAjustadasEst_Diversa &VecCCAED)
+{
+    return out13 << VecCCAED.Muniforme << VecCCAED.Mdiverso << VecCCAED.Mestatico << VecCCAED.Mincremento
+                 << VecCCAED.MDTmin << VecCCAED.MK << VecCCAED.MTS << VecCCAED.MTE << VecCCAED.MWCP << VecCCAED.Mh;
+}
+
+QDataStream &operator>>(QDataStream &in13, VecPlot_CCAjustadasEst_Diversa &VecCCAED)
+{
+    return in13 >> VecCCAED.Muniforme >> VecCCAED.Mdiverso >> VecCCAED.Mestatico >> VecCCAED.Mincremento
+                >> VecCCAED.MDTmin >> VecCCAED.MK >> VecCCAED.MTS >> VecCCAED.MTE >> VecCCAED.MWCP >> VecCCAED.Mh;
+}
+
+VecPlot_CCAjustadasInc_Diversa::VecPlot_CCAjustadasInc_Diversa(bool uniforme, bool diverso,
+                                                               bool estatico, bool incremento,
+                                                               QVector<double> &TS, QVector<double> &TE,
+                                                               QVector<double> &Wcp, QVector<double> &h,
+                                                               double min, double max, double inc, double K)
+{
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+    MMin = min;
+    MMax = max;
+    MInc = inc;
+    MTS.resize(TS.size());
+    MTE.resize(TE.size());
+    MWCP.resize(Wcp.size());
+    Mh.resize(h.size());
+    for(int i = 0; i < TS.size(); i++){
+        MTS[i] = TS[i];
+    }
+    for(int i = 0; i < TE.size(); i++){
+        MTE[i] = TE[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        MWCP[i] = Wcp[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        Mh[i] = h[i];
+    }
+    MK = K;
+}
+
+bool VecPlot_CCAjustadasInc_Diversa::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecPlot_CCAjustadasInc_Diversa::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecPlot_CCAjustadasInc_Diversa::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecPlot_CCAjustadasInc_Diversa::getIncremmento() const
+{
+    return Mincremento;
+}
+
+double VecPlot_CCAjustadasInc_Diversa::getMin() const
+{
+    return MMin;
+}
+
+double VecPlot_CCAjustadasInc_Diversa::getMax() const
+{
+    return MMax;
+}
+
+double VecPlot_CCAjustadasInc_Diversa::getInc() const
+{
+    return MInc;
+}
+
+double VecPlot_CCAjustadasInc_Diversa::getK() const
+{
+    return MK;
+}
+
+QVector<double> VecPlot_CCAjustadasInc_Diversa::getTS() const
+{
+    return MTS;
+}
+
+QVector<double> VecPlot_CCAjustadasInc_Diversa::getTE() const
+{
+    return MTE;
+}
+
+QVector<double> VecPlot_CCAjustadasInc_Diversa::getWCP() const
+{
+    return MWCP;
+}
+
+QVector<double> VecPlot_CCAjustadasInc_Diversa::geth() const
+{
+    return Mh;
+}
+
+QDataStream &operator<<(QDataStream &out14, const VecPlot_CCAjustadasInc_Diversa &VecCCAID)
+{
+    return out14 << VecCCAID.Muniforme << VecCCAID.Mdiverso << VecCCAID.Mestatico << VecCCAID.Mincremento
+                 << VecCCAID.MMin << VecCCAID.MMax << VecCCAID.MInc << VecCCAID.MK << VecCCAID.MTS
+                 << VecCCAID.MTE << VecCCAID.MWCP << VecCCAID.Mh;
+}
+
+QDataStream &operator>>(QDataStream &in14, VecPlot_CCAjustadasInc_Diversa &VecCCAID)
+{
+    return in14  >> VecCCAID.Muniforme >> VecCCAID.Mdiverso >> VecCCAID.Mestatico >> VecCCAID.Mincremento
+                 >> VecCCAID.MMin >> VecCCAID.MMax >> VecCCAID.MInc >> VecCCAID.MK >> VecCCAID.MTS
+                 >> VecCCAID.MTE >> VecCCAID.MWCP >> VecCCAID.Mh;
+}
