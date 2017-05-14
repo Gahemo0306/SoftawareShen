@@ -21,6 +21,8 @@
 #define VECPLOTGCC_BOOL_FILENAME "./Vecplotgccbool"
 #define VECPLOTGCCESTATICO_FILENAME "./Vecplotgccestatico.bin"
 #define VECPLOTGCCDINAMICO_FILENAME "./Vecplotgccdinamico.bin"
+#define VECPLOTGCCESTATICO_DIVERSO_FILENAME "./Vecplotgcced.bin"
+#define VECPLOTGCCDINAMICA_DIVERSO_FILENAME "./Vecplotgccdd.bin"
 
 #define VECPLOTAREAS_BOOL_FILENAME "./Vecplotareasbool"
 #define VECPLOTAREASDINAMICO_FILENAME "./Vecplotareasdin"

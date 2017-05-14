@@ -312,9 +312,76 @@ plotter::plotter(QWidget *parent) :
             FileVec.flush();
             FileVec.close();
         }else if(div == true && est == true){
-
+            QFile FileVec(VECPLOTGCCESTATICO_DIVERSO_FILENAME);
+            if (!FileVec.open(QIODevice::ReadOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream in15(&FileVec);
+            bool Divers = false;
+            bool Uniform = false;
+            bool Estatic = false;
+            bool Increment = false;
+            double DTmin = 0;
+            double K = 0;
+            QVector<double> Ts,Te,WCp,h1;
+            Ts.resize(10);
+            Te.resize(10);
+            WCp.resize(10);
+            h1.resize(10);
+            in15.setVersion(QDataStream::Qt_5_4);
+            VecGCCED GCCED(Uniform,Divers,Estatic,Increment,Ts,Te,WCp,h1,DTmin,K);
+            in15 >> GCCED;
+            bool Diverso1 =  GCCED.getDiverso();
+            bool Uniforme1 =  GCCED.getUniforme();
+            bool Estatico1 =  GCCED.getEstatico();
+            bool Incremento1 =  GCCED.getIncremmento();
+            double Min1 = GCCED.getDTmin();
+            double Max1 = 0;
+            double Inc1 = 0;
+            double K1 = GCCED.getK();
+            QVector<double> TS1 =  GCCED.getTS();
+            QVector<double> TE1 = GCCED.getTE();
+            QVector<double> WCP1 =  GCCED.getWCP();
+            QVector<double> H1 = GCCED.geth();
+            plot(ventanaplot,Uniforme1,Diverso1,Estatico1,Incremento1,TS1,TE1,WCP1,H1,Min1,Max1,Inc1,K1);
         }else if(div == true && inc == true){
-
+            QFile FileVec(VECPLOTGCCDINAMICA_DIVERSO_FILENAME);
+            if (!FileVec.open(QIODevice::ReadOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream in16(&FileVec);
+            bool Divers = false;
+            bool Uniform = false;
+            bool Estatic = false;
+            bool Increment = false;
+            double Min = 0;
+            double Max = 0;
+            double Inc = 0;
+            double K = 0;
+            QVector<double> Ts,Te,WCp,h1;
+            Ts.resize(10);
+            Te.resize(10);
+            WCp.resize(10);
+            h1.resize(10);
+            in16.setVersion(QDataStream::Qt_5_4);
+            //VecGCCED GCCED(Uniform,Divers,Estatic,Increment,Ts,Te,WCp,h1,DTmin,K);
+            VecGCCDD GCCDD(Uniform,Divers,Estatic,Increment,Ts,Te,WCp,h1,Min,Max,Inc,K);
+            in16 >> GCCDD;
+            bool Diverso1 =  GCCDD.getDiverso();
+            bool Uniforme1 =  GCCDD.getUniforme();
+            bool Estatico1 =  GCCDD.getEstatico();
+            bool Incremento1 =  GCCDD.getIncremmento();
+            double Min1 = GCCDD.getMin();
+            double Max1 = GCCDD.getMax();
+            double Inc1 = GCCDD.getInc();
+            double K1 = GCCDD.getK();
+            QVector<double> TS1 =  GCCDD.getTS();
+            QVector<double> TE1 = GCCDD.getTE();
+            QVector<double> WCP1 =  GCCDD.getWCP();
+            QVector<double> H1 = GCCDD.geth();
+            plot(ventanaplot,Uniforme1,Diverso1,Estatico1,Incremento1,TS1,TE1,WCP1,H1,Min1,Max1,Inc1,K1);
         }
     } // FALTA PARA AREAS
     Fil.flush();
@@ -330,7 +397,7 @@ void plotter::plot(int ventanaplot, bool uniforme, bool diverso, bool estatico, 
                    QVector<double> TS, QVector<double> TE, QVector<double> Wcp, QVector<double> h,
                    double Min, double Max, double Inc, double K)
 {
-    if(ventanaplot == 0){ // es la de las curvas compuestas ajustadas
+    if(ventanaplot == 0){ // es la de las curvas compuestas OK
         ui->qcustomplot->setVisible(true);
         ui->qcustomplot->setEnabled(true);
         ui->qcustomplot->clearGraphs();
@@ -384,7 +451,7 @@ void plotter::plot(int ventanaplot, bool uniforme, bool diverso, bool estatico, 
             ui->qcustomplot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->qcustomplot, "Diverse composite curves", QFont("sans", 12, QFont::Bold)));
             ui->qcustomplot->replot();
         }
-    }else if(ventanaplot == 1){// es la de las curvas compuestas ajustadas
+    }else if(ventanaplot == 1){// es la de las curvas compuestas ajustadas OK
             ui->qcustomplot->setVisible(true);
             ui->qcustomplot->setEnabled(true);
             ui->qcustomplot->clearGraphs();
@@ -513,14 +580,12 @@ void plotter::plot(int ventanaplot, bool uniforme, bool diverso, bool estatico, 
             ui->qcustomplot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
             ui->qcustomplot->graph(0)->setLineStyle(QCPGraph::lsLine);
             ui->qcustomplot->graph(0)->setData(GCENTALPIA,GCTEMPERATURAS);
-//            ui->qcustomplot->xAxis->setLabel("ENTHALPY");
-//            ui->qcustomplot->yAxis->setLabel("TEMPERATURE");
-            double minX = *std::min_element(GCENTALPIA.begin(),GCENTALPIA.end());
-            double maxX = *std::max_element(GCENTALPIA.begin(),GCENTALPIA.end());
-            double minY = *std::min_element(GCTEMPERATURAS.begin(),GCTEMPERATURAS.end());
-            double maxY = *std::max_element(GCTEMPERATURAS.begin(),GCTEMPERATURAS.end());
-            ui->qcustomplot->xAxis->setRange(minX-5,maxX+5);
-            ui->qcustomplot->yAxis->setRange(minY-5,maxY+5);
+            ui->qcustomplot->xAxis->setLabel("ENTHALPY");
+            ui->qcustomplot->yAxis->setLabel("TEMPERATURE");
+            ui->qcustomplot->graph(0)->rescaleAxes();
+            ui->qcustomplot->graph(0)->rescaleAxes(true);
+            ui->qcustomplot->plotLayout()->insertRow(0);
+            ui->qcustomplot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->qcustomplot, "Uniform grand compositive curve", QFont("sans", 12, QFont::Bold)));
             ui->qcustomplot->replot();
         }else if(uniforme == true && incremento == true){
             double Minimo = Min;
@@ -536,14 +601,57 @@ void plotter::plot(int ventanaplot, bool uniforme, bool diverso, bool estatico, 
                  ui->qcustomplot->graph(i)->setPen(QPen(Qt::blue));
                  ui->qcustomplot->graph(i)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
                  ui->qcustomplot->graph(i)->setLineStyle(QCPGraph::lsLine);
-                 ui->qcustomplot->graph(i)->setData(GCTEMPERATURAS,GCENTALPIA);
+                 ui->qcustomplot->graph(i)->setData(GCENTALPIA,GCTEMPERATURAS);
                  ui->qcustomplot->graph(i)->rescaleAxes();
                  ui->qcustomplot->graph(i)->rescaleAxes(true);
                  DTmin = DTmin + Incremento;
             }
+            ui->qcustomplot->xAxis->setLabel("ENTHALPY");
+            ui->qcustomplot->yAxis->setLabel("TEMPERATURE");
+            ui->qcustomplot->plotLayout()->insertRow(0);
+            ui->qcustomplot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->qcustomplot, "Uniform grand compositive curve", QFont("sans", 12, QFont::Bold)));
             ui->qcustomplot->replot();
         }else if(diverso == true && estatico == true){
+            double DTMin = Min;
+            PlotGCC_DIVERSA plotGCCD(TS,TE,Wcp,h,DTMin,K);
+            QVector<double> GCENTALPIA = plotGCCD.getGCENTALPIA();
+            QVector<double> GCTEMPERATURAS = plotGCCD.getGCTEMPERATURAS();
+            ui->qcustomplot->addGraph();
+            ui->qcustomplot->graph(0)->setPen(QPen(Qt::blue));
+            ui->qcustomplot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
+            ui->qcustomplot->graph(0)->setLineStyle(QCPGraph::lsLine);
+            ui->qcustomplot->graph(0)->setData(GCENTALPIA,GCTEMPERATURAS);
+            ui->qcustomplot->graph(0)->rescaleAxes();
+            ui->qcustomplot->graph(0)->rescaleAxes(true);
+            ui->qcustomplot->xAxis->setLabel("ENTHALPY");
+            ui->qcustomplot->yAxis->setLabel("TEMPERATURE");
+            ui->qcustomplot->plotLayout()->insertRow(0);
+            ui->qcustomplot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->qcustomplot, "Diverse grand compositive curve", QFont("sans", 12, QFont::Bold)));
+            ui->qcustomplot->replot();
         }else if(diverso == true && incremento == true){
+            double Minimo = Min;
+            double Maximo = Max;
+            double Incremento = Inc;
+            double Iteraciones =(Maximo-Minimo)/Incremento;
+            double DTmin = Minimo;
+            for(int i = 0; i <= Iteraciones ; i++){
+                 PlotGCC_DIVERSA plotGCCD(TS,TE,Wcp,h,DTmin,K);
+                 QVector<double> GCENTALPIA = plotGCCD.getGCENTALPIA();
+                 QVector<double> GCTEMPERATURAS = plotGCCD.getGCTEMPERATURAS();
+                 ui->qcustomplot->addGraph();
+                 ui->qcustomplot->graph(i)->setPen(QPen(Qt::blue));
+                 ui->qcustomplot->graph(i)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
+                 ui->qcustomplot->graph(i)->setLineStyle(QCPGraph::lsLine);
+                 ui->qcustomplot->graph(i)->setData(GCENTALPIA,GCTEMPERATURAS);
+                 ui->qcustomplot->graph(i)->rescaleAxes();
+                 ui->qcustomplot->graph(i)->rescaleAxes(true);
+                 DTmin = DTmin + Incremento;
+            }
+            ui->qcustomplot->xAxis->setLabel("ENTHALPY");
+            ui->qcustomplot->yAxis->setLabel("TEMPERATURE");
+            ui->qcustomplot->plotLayout()->insertRow(0);
+            ui->qcustomplot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->qcustomplot, "Diverse grand compositive curve", QFont("sans", 12, QFont::Bold)));
+            ui->qcustomplot->replot();
         }
     }else if(ventanaplot==3){ //areas
 

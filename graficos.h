@@ -104,4 +104,17 @@ private:
     QVector<double> MDeficit;
 };
 
+
+class PlotGCC_DIVERSA
+{
+public:
+    PlotGCC_DIVERSA(QVector<double> Tsupply, QVector<double> Ttarget,
+                    QVector<double> Cp, QVector<double> h , double DTmin,
+                    double K);
+    QVector<double> getGCTEMPERATURAS();
+    QVector<double> getGCENTALPIA();
+private:
+    QVector<double> MGCTEMPERATURAS,MGCENTALPIA;
+};
+
 #endif // GRAFICOS_H

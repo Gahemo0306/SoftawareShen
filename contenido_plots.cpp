@@ -205,6 +205,7 @@ void Contenido_PLOTS::accionguardar()
     Tabplot tabvalue;
     in4 >> tabvalue;
     int ventanaplot = tabvalue.gettabvalue();
+    qDebug() << ventanaplot;
     Fil.flush();
     Fil.close();
     if(ventanaplot == 1) // curvas compuestas ajustadas)
@@ -362,6 +363,60 @@ void Contenido_PLOTS::accionguardar()
             Inc = ui->Increment->value();
             VecGCCdinamico VecGCdin(uniforme,diverso,estatico,incremento,TS,TE,Wcp,Min,Max,Inc);
             out12 << VecGCdin;
+            FileVec.flush();
+            FileVec.close();
+        }else if(diverso == true && estatico == true){
+            QFile FileBools(VECPLOTGCC_BOOL_FILENAME);
+            if (!FileBools.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out9(&FileBools);
+            out9.setVersion(QDataStream::Qt_5_4);
+            VecPlot_CurvasCompuestasAjustadasbool VecCCAB(uniforme,diverso,estatico,incremento);
+            out9 << VecCCAB;
+            FileBools.flush();
+            FileBools.close();
+            QFile FileVec(VECPLOTGCCESTATICO_DIVERSO_FILENAME);
+            if (!FileVec.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out15(&FileVec);
+            out15.setVersion(QDataStream::Qt_5_4);
+            DTmin = ui->Minimun->value();
+            K = ui->k->value();
+            VecGCCED GCCED(uniforme,diverso,estatico,incremento,TS,TE,Wcp,h,DTmin,K);
+            out15 << GCCED;
+            FileVec.flush();
+            FileVec.close();
+            qDebug() << "REPOR";
+        }else if(diverso == true && incremento == true){
+            QFile FileBools(VECPLOTGCC_BOOL_FILENAME);
+            if (!FileBools.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out9(&FileBools);
+            out9.setVersion(QDataStream::Qt_5_4);
+            VecPlot_CurvasCompuestasAjustadasbool VecCCAB(uniforme,diverso,estatico,incremento);
+            out9 << VecCCAB;
+            FileBools.flush();
+            FileBools.close();
+            QFile FileVec(VECPLOTGCCDINAMICA_DIVERSO_FILENAME);
+            if (!FileVec.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream out16(&FileVec);
+            out16.setVersion(QDataStream::Qt_5_4);
+            Min = ui->Minimun->value();
+            Max = ui->Maximun->value();
+            Inc = ui->Increment->value();
+            K = ui->k->value();
+            VecGCCDD GCCDD(uniforme,diverso,estatico,incremento,TS,TE,Wcp,h,Min,Max,Inc,K);
+            //VecGCCdinamico VecGCdin(uniforme,diverso,estatico,incremento,TS,TE,Wcp,Min,Max,Inc);
+            out16 << GCCDD;
             FileVec.flush();
             FileVec.close();
         }

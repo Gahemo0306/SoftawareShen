@@ -1056,3 +1056,199 @@ QDataStream &operator>>(QDataStream &in14, VecPlot_CCAjustadasInc_Diversa &VecCC
                  >> VecCCAID.MMin >> VecCCAID.MMax >> VecCCAID.MInc >> VecCCAID.MK >> VecCCAID.MTS
                  >> VecCCAID.MTE >> VecCCAID.MWCP >> VecCCAID.Mh;
 }
+
+VecGCCED::VecGCCED(bool uniforme, bool diverso, bool estatico, bool incremento,
+                   QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                   QVector<double> &h ,double DTmin,double K)
+{
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+    MDTmin = DTmin;
+    MK = K;
+    MTS.resize(TS.size());
+    MTE.resize(TE.size());
+    MWCP.resize(Wcp.size());
+    Mh.resize(h.size());
+    for(int i = 0; i < TS.size(); i++){
+        MTS[i] = TS[i];
+    }
+    for(int i = 0; i < TE.size(); i++){
+        MTE[i] = TE[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        MWCP[i] = Wcp[i];
+    }
+    for(int i = 0; i < h.size(); i++){
+        Mh[i] = h[i];
+    }
+}
+
+bool VecGCCED::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecGCCED::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecGCCED::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecGCCED::getIncremmento() const
+{
+    return Mincremento;
+}
+
+double VecGCCED::getDTmin() const
+{
+    return MDTmin;
+}
+
+double VecGCCED::getK() const
+{
+    return MK;
+}
+
+QVector<double> VecGCCED::getTS() const
+{
+    return MTS;
+}
+
+QVector<double> VecGCCED::getTE() const
+{
+    return MTE;
+}
+
+QVector<double> VecGCCED::getWCP() const
+{
+    return MWCP;
+}
+
+QVector<double> VecGCCED::geth() const
+{
+    return Mh;
+}
+
+QDataStream &operator<<(QDataStream &out15, const VecGCCED &GCCED)
+{
+    return out15 << GCCED.Muniforme << GCCED.Mdiverso << GCCED.Mestatico << GCCED.Mincremento
+                 << GCCED.MDTmin << GCCED.MK << GCCED.MTS
+                 << GCCED.MTE << GCCED.MWCP << GCCED.Mh;
+}
+
+QDataStream &operator>>(QDataStream &in15, VecGCCED &GCCED)
+{
+    return in15  >> GCCED.Muniforme >> GCCED.Mdiverso >> GCCED.Mestatico >> GCCED.Mincremento
+                 >> GCCED.MDTmin >> GCCED.MK >> GCCED.MTS
+                 >> GCCED.MTE >> GCCED.MWCP >> GCCED.Mh;
+}
+
+VecGCCDD::VecGCCDD(bool uniforme, bool diverso, bool estatico, bool incremento,
+                   QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                   QVector<double> &h, double Min, double Max, double Inc, double K)
+{
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    Mestatico = estatico;
+    Mincremento = incremento;
+    MMin= Min;
+    MMax = Max;
+    MInc = Inc;
+    MK = K;
+    MTS.resize(TS.size());
+    MTE.resize(TE.size());
+    MWCP.resize(Wcp.size());
+    Mh.resize(h.size());
+    for(int i = 0; i < TS.size(); i++){
+        MTS[i] = TS[i];
+    }
+    for(int i = 0; i < TE.size(); i++){
+        MTE[i] = TE[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        MWCP[i] = Wcp[i];
+    }
+    for(int i = 0; i < h.size(); i++){
+        Mh[i] = h[i];
+    }
+}
+
+bool VecGCCDD::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecGCCDD::getDiverso() const
+{
+    return Mdiverso;
+}
+
+bool VecGCCDD::getEstatico() const
+{
+    return Mestatico;
+}
+
+bool VecGCCDD::getIncremmento() const
+{
+    return Mincremento;
+}
+
+double VecGCCDD::getMin() const
+{
+    return MMin;
+}
+
+double VecGCCDD::getMax() const
+{
+    return MMax;
+}
+
+double VecGCCDD::getInc() const
+{
+    return MInc;
+}
+
+double VecGCCDD::getK() const
+{
+    return MK;
+}
+
+QVector<double> VecGCCDD::getTS() const
+{
+    return MTS;
+}
+
+QVector<double> VecGCCDD::getTE() const
+{
+    return MTE;
+}
+
+QVector<double> VecGCCDD::getWCP() const
+{
+    return MWCP;
+}
+
+QVector<double> VecGCCDD::geth() const
+{
+    return Mh;
+}
+
+QDataStream &operator<<(QDataStream &out16, const VecGCCDD &GCCDD)
+{
+    return out16 << GCCDD.Muniforme << GCCDD.Mdiverso << GCCDD.Mestatico << GCCDD.Mincremento
+                 << GCCDD.MMin << GCCDD.MMax << GCCDD.MInc << GCCDD.MK << GCCDD.MTS
+                 << GCCDD.MTE << GCCDD.MWCP << GCCDD.Mh;
+}
+
+QDataStream &operator>>(QDataStream &in16, VecGCCDD &GCCDD)
+{
+    return in16  >> GCCDD.Muniforme >> GCCDD.Mdiverso >> GCCDD.Mestatico >> GCCDD.Mincremento
+                 >> GCCDD.MMin >> GCCDD.MMax >> GCCDD.MInc >> GCCDD.MK >> GCCDD.MTS
+                 >> GCCDD.MTE >> GCCDD.MWCP >> GCCDD.Mh;
+}

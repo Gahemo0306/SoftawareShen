@@ -333,4 +333,58 @@ private:
 QDataStream &operator<<(QDataStream &out14, const VecPlot_CCAjustadasInc_Diversa &VecCCAID);
 QDataStream &operator>>(QDataStream &in14, VecPlot_CCAjustadasInc_Diversa &VecCCAID);
 
+class VecGCCED
+{
+public:
+    VecGCCED(bool uniforme, bool diverso, bool estatico, bool incremento,
+                             QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                             QVector<double> &h ,double DTmin,double K);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    double getDTmin() const;
+    double getK() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    QVector<double> geth() const;
+    friend QDataStream &operator<<(QDataStream &out15, const VecGCCED &GCCED);
+    friend QDataStream &operator>>(QDataStream &in15, VecGCCED &GCCED);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+    double MDTmin, MK;
+    QVector<double> MTS, MTE, MWCP, Mh;
+};
+QDataStream &operator<<(QDataStream &out15, const VecGCCED &GCCED);
+QDataStream &operator>>(QDataStream &in15, VecGCCED &GCCED);
+
+class VecGCCDD
+{
+public:
+    VecGCCDD(bool uniforme, bool diverso, bool estatico, bool incremento,
+                             QVector<double> &TS, QVector<double> &TE, QVector<double> &Wcp,
+                             QVector<double> &h ,double Min,double Max, double Inc,double K);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    bool getEstatico() const;
+    bool getIncremmento() const;
+    double getMin() const;
+    double getMax() const;
+    double getInc() const;
+    double getK() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    QVector<double> geth() const;
+    friend QDataStream &operator<<(QDataStream &out16, const VecGCCDD &GCCDD);
+    friend QDataStream &operator>>(QDataStream &in16, VecGCCDD &GCCDD);
+private:
+    bool Muniforme,Mdiverso,Mestatico,Mincremento;
+    double MMin,MMax,MInc,MK;
+    QVector<double> MTS, MTE, MWCP, Mh;
+};
+QDataStream &operator<<(QDataStream &out16, const VecGCCDD &GCCDD);
+QDataStream &operator>>(QDataStream &in16, VecGCCDD &GCCDD);
+
 #endif // DUVALORACTION_H
