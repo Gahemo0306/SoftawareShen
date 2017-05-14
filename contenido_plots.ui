@@ -229,6 +229,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="decimals">
+           <number>6</number>
+          </property>
          </widget>
         </item>
         <item row="2" column="0">

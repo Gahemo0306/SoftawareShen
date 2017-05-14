@@ -2513,23 +2513,21 @@ Plot_CCAJUSTADA_DIVERSA::Plot_CCAJUSTADA_DIVERSA(QVector<double> Tsupply, QVecto
         if(Tsupply[i] >= Ttarget[i])
         {
             DeltasTi[i] = K / h[i];
-            Tsupply[i] = Tsupply[i] + DTmin/2 - DeltasTi[i];
-            Ttarget[i] = Ttarget[i] + DTmin/2 - DeltasTi[i];
+            Tsupply[i] = Tsupply[i] + (DTmin/2 - DeltasTi[i]);
+            Ttarget[i] = Ttarget[i] + (DTmin/2 - DeltasTi[i]);
             VectorCalientesCp << Tsupply[i] << Ttarget[i] << Cp[i] ;//<< h[i];
             VectorCalientes << Tsupply[i] << Ttarget[i];
         }
         if(Tsupply[i] <= Ttarget[i])
         {
             DeltasTi[i] = K / h[i];
-            Tsupply[i] = Tsupply[i] + DTmin/2 - DeltasTi[i];
-            Ttarget[i] = Ttarget[i] + DTmin/2 - DeltasTi[i];
+            Tsupply[i] = Tsupply[i] - (DTmin/2 - DeltasTi[i]);
+            Ttarget[i] = Ttarget[i] - (DTmin/2 - DeltasTi[i]);
             VectorFriasCp << Tsupply[i] << Ttarget[i] << Cp[i] ;//<< h[i];
             VectorFrias << Tsupply[i] << Ttarget[i];
         }
         j++;
     }
-    qDebug() << VectorCalientes << "Calientes diversas";
-    qDebug() << VectorFrias << "Frias diversas";
     QVector < QVector <double> > VectorCalientesMATRIZ;
     Pares = VectorCalientesCp.size();
     nfils = Pares/3;
@@ -2582,8 +2580,6 @@ Plot_CCAJUSTADA_DIVERSA::Plot_CCAJUSTADA_DIVERSA(QVector<double> Tsupply, QVecto
         VCC[i][1] = VectorCalientes[k];
         k++;
     }
-//    VCC = VectorCalientes;
-//    VFC = VectorFrias;}
     Pares = VectorFrias.size();
     nfils = Pares/2;
     ncols = 2;
@@ -2718,7 +2714,7 @@ Plot_CCAJUSTADA_DIVERSA::Plot_CCAJUSTADA_DIVERSA(QVector<double> Tsupply, QVecto
     {
         int k=0;
         for(j = 0; j < m ; j++){
-            if(VCCurvas[i]<= VectorCalientesMATRIZ[j][0]-1 && VCCurvas[i]>= VectorCalientesMATRIZ[j][1]-1 )
+            if(VCCurvas[i]<= VectorCalientesMATRIZ[j][0]-.1 && VCCurvas[i]>= VectorCalientesMATRIZ[j][1]-.1 )
             {
                 sumCpCal[l][k] = VectorCalientesMATRIZ[j][2];
             }else{
@@ -2744,7 +2740,7 @@ Plot_CCAJUSTADA_DIVERSA::Plot_CCAJUSTADA_DIVERSA(QVector<double> Tsupply, QVecto
     {
         int k1=0;
         for(j = 0; j < m ; j++){
-            if(VFCurvas[i]>= VectorFriasMATRIZ[j][0]-1 && VFCurvas[i]<= VectorFriasMATRIZ[j][1]-1 )
+            if(VFCurvas[i]>= VectorFriasMATRIZ[j][0]-.1 && VFCurvas[i]<= VectorFriasMATRIZ[j][1]-.1 )
             {
                 sumCpFri[l1][k1] = VectorFriasMATRIZ[j][2];
             }else{
@@ -2884,7 +2880,7 @@ Plot_CCAJUSTADA_DIVERSA::Plot_CCAJUSTADA_DIVERSA(QVector<double> Tsupply, QVecto
     for( i = 1; i < r3; ++i){
         k = 0;
         for(j = 0; j < r4; ++j){
-            if(VectorCorrientesTotal[i][1] <= VCC[j][0]-1 && VectorCorrientesTotal[i][1] >= VCC[j][1] ){
+            if(VectorCorrientesTotal[i][1] <= VCC[j][0]-.1 && VectorCorrientesTotal[i][1] >= VCC[j][1]-.1 ){
                 sumCpCalTab[l][k] = VectorCalientesMATRIZ[j][2];
             }else{
                 sumCpCalTab[l][k] = 0.0 ;
@@ -2905,7 +2901,7 @@ Plot_CCAJUSTADA_DIVERSA::Plot_CCAJUSTADA_DIVERSA(QVector<double> Tsupply, QVecto
     for( i = 1; i < r3; ++i){
         k = 0;
         for(j = 0; j < r5; ++j){
-            if(VectorCorrientesTotal[i][1] <= VFC[j][1]-1 && VectorCorrientesTotal[i][1] >= VFC[j][0] ){
+            if(VectorCorrientesTotal[i][0] <= VFC[j][1]-.1 && VectorCorrientesTotal[i][0] >= VFC[j][0]-.1 ){
                 sumCpFriTab[l][k] = VectorFriasMATRIZ[j][2];
             }else{
                 sumCpFriTab[l][k] = 0.0 ;
@@ -2995,7 +2991,8 @@ Plot_CCAJUSTADA_DIVERSA::Plot_CCAJUSTADA_DIVERSA(QVector<double> Tsupply, QVecto
     }
     n = PUNTOSCF.size();
     PuntosCurvasF.resize(PUNTOSCF.size()+1);
-    double max = *std::max_element(VAL2.begin(),VAL2.end());
+    //double max = *std::max_element(VAL2.begin(),VAL2.end());
+    double max = VAL2[VAL2.size()-1];
     PuntosCurvasF[0] = max ;
     for(i = 0; i < n; i++){
         PuntosCurvasF[i+1] = PuntosCurvasF[i] + PUNTOSCF[i][3];
@@ -3004,14 +3001,16 @@ Plot_CCAJUSTADA_DIVERSA::Plot_CCAJUSTADA_DIVERSA(QVector<double> Tsupply, QVecto
     MCCTEMPERATURAS.resize(VCCurvas.size());
     for ( int i = 0 ; i < PuntosCurvasC.size() ; i++){
         MCCENTALPIA[i] = PuntosCurvasC[i];
-        MCCTEMPERATURAS[i] = VCCurvas[i];
+        MCCTEMPERATURAS[i] = VCCurvas[i] - DTmin/2;
     }
     MCFENTALPIAAJUSTADA.resize(PuntosCurvasF.size());
     MCFTEMPERATURASAJUSTADA.resize(VFCurvas.size());
     for ( int i = 0 ; i < PuntosCurvasF.size() ; i++){
         MCFENTALPIAAJUSTADA[i] = PuntosCurvasF[i];
-        MCFTEMPERATURASAJUSTADA[i] = VFCurvas[i];
+        MCFTEMPERATURASAJUSTADA[i] = VFCurvas[i] + DTmin/2;
     }
+    qDebug() << MCCTEMPERATURAS << "CC";
+    qDebug() << MCFTEMPERATURASAJUSTADA << "CF";
 }
 
 QVector<double> Plot_CCAJUSTADA_DIVERSA::getCCENTALPIA()
