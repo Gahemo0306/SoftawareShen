@@ -1252,3 +1252,151 @@ QDataStream &operator>>(QDataStream &in16, VecGCCDD &GCCDD)
                  >> GCCDD.MMin >> GCCDD.MMax >> GCCDD.MInc >> GCCDD.MK >> GCCDD.MTS
                  >> GCCDD.MTE >> GCCDD.MWCP >> GCCDD.Mh;
 }
+
+VecAreasUniforme::VecAreasUniforme(bool uniforme, bool diverso,
+                                   QVector<double> &TS, QVector<double> &TE,
+                                   QVector<double> &Wcp, QVector<double> &h, QVector<double> &Calentamiento,
+                                   QVector<double> &Enfriamento, double Min, double Max, double Inc, int CTo, int CCo)
+{
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+    MMin = Min;
+    MMax = Max;
+    MInc = Inc;
+    MCTo = CTo;
+    MCCo = CCo;
+    MTS.resize(TS.size());
+    MTE.resize(TE.size());
+    MWCP.resize(Wcp.size());
+    Mh.resize(h.size());
+    MCalentamiento.resize(Calentamiento.size());
+    MEnfriamento.resize(Enfriamento.size());
+    for(int i = 0; i < TS.size(); i++){
+        MTS[i] = TS[i];
+    }
+    for(int i = 0; i < TE.size(); i++){
+        MTE[i] = TE[i];
+    }
+    for(int i = 0; i < Wcp.size(); i++){
+        MWCP[i] = Wcp[i];
+    }
+    for(int i = 0; i < h.size(); i++){
+        Mh[i] = h[i];
+    }
+    for(int i = 0; i < Calentamiento.size(); i++){
+        MCalentamiento[i] = Calentamiento[i];
+    }
+    for(int i = 0; i < Enfriamento.size(); i++){
+        MEnfriamento[i] = Enfriamento[i];
+    }
+}
+
+bool VecAreasUniforme::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecAreasUniforme::getDiverso() const
+{
+    return Mdiverso;
+}
+
+
+double VecAreasUniforme::getMax() const
+{
+    return MMax;
+}
+
+double VecAreasUniforme::getInc() const
+{
+    return MInc;
+}
+
+double VecAreasUniforme::getMin() const
+{
+    return MMin;
+}
+
+int VecAreasUniforme::getCTo() const
+{
+    return MCTo;
+}
+
+int VecAreasUniforme::getCCo() const
+{
+    return MCCo;
+}
+
+QVector<double> VecAreasUniforme::getTS() const
+{
+    return MTS;
+}
+
+QVector<double> VecAreasUniforme::getTE() const
+{
+    return MTE;
+}
+
+QVector<double> VecAreasUniforme::getWCP() const
+{
+    return MWCP;
+}
+
+QVector<double> VecAreasUniforme::geth() const
+{
+    return Mh;
+}
+
+QVector<double> VecAreasUniforme::getCalentamiento() const
+{
+    return MCalentamiento;
+}
+
+QVector<double> VecAreasUniforme::getEnfriamento() const
+{
+    return MEnfriamento;
+}
+
+QDataStream &operator<<(QDataStream &out17, const VecAreasUniforme &VAU)
+{
+    return out17 << VAU.Muniforme << VAU.Mdiverso
+                 << VAU.MMin << VAU.MMax << VAU.MInc
+                 << VAU.MCTo << VAU.MCCo << VAU.MTS
+                 << VAU.MTE << VAU.MWCP << VAU.Mh
+                 << VAU.MCalentamiento << VAU.MEnfriamento;
+}
+
+QDataStream &operator>>(QDataStream &in17, VecAreasUniforme &VAU)
+{
+    return in17  >> VAU.Muniforme >> VAU.Mdiverso
+                 >> VAU.MMin >> VAU.MMax >> VAU.MInc
+                 >> VAU.MCTo >> VAU.MCCo >> VAU.MTS
+                 >> VAU.MTE >> VAU.MWCP >> VAU.Mh
+                 >> VAU.MCalentamiento >> VAU.MEnfriamento;
+}
+
+VecAreasUniformebool::VecAreasUniformebool(bool uniforme, bool diverso)
+{
+    Muniforme = uniforme;
+    Mdiverso = diverso;
+}
+
+bool VecAreasUniformebool::getUniforme() const
+{
+    return Muniforme;
+}
+
+bool VecAreasUniformebool::getDiverso() const
+{
+    return Mdiverso;
+}
+
+QDataStream &operator<<(QDataStream &out18, const VecAreasUniformebool &VecAUB)
+{
+    return out18 << VecAUB.Muniforme << VecAUB.Mdiverso ;
+}
+
+QDataStream &operator>>(QDataStream &in18, VecAreasUniformebool &VecAUB)
+{
+    return in18 >> VecAUB.Muniforme >> VecAUB.Mdiverso ;
+}

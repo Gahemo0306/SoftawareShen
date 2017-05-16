@@ -6,7 +6,7 @@
 //#include <QtAlgorithms>
 #include <algorithm>
 
-using namespace std;
+//using namespace std;
 
 Graficos::Graficos()
 {
@@ -810,7 +810,8 @@ Plot_curvascompuestasajustadas::Plot_curvascompuestasajustadas(QVector<double> T
     }
     n = PUNTOSCF.size();
     PuntosCurvasF.resize(PUNTOSCF.size()+1);
-    double max = *std::max_element(VAL2.begin(),VAL2.end());
+    //double max = *std::max_element(VAL2.begin(),VAL2.end());
+    double max = VAL2[VAL2.size()-1];
     PuntosCurvasF[0] = max ;
     for(i = 0; i < n; i++){
         PuntosCurvasF[i+1] = PuntosCurvasF[i] + PUNTOSCF[i][3];
@@ -1082,7 +1083,7 @@ Plot_Dtmin_vs_Areas::Plot_Dtmin_vs_Areas(QVector<double> Tsupply, QVector<double
     {
         int k=0;
         for(j = 0; j < m ; j++){
-            if(VCCurvas[i]<= VectorCalientesMATRIZ[j][0]-1 && VCCurvas[i]>= VectorCalientesMATRIZ[j][1]-1 )
+            if(VCCurvas[i]<= VectorCalientesMATRIZ[j][0]-.1 && VCCurvas[i]>= VectorCalientesMATRIZ[j][1]-.1 )
             {
                 sumCpCal[l][k] = VectorCalientesMATRIZ[j][2];
             }else{
@@ -1108,7 +1109,7 @@ Plot_Dtmin_vs_Areas::Plot_Dtmin_vs_Areas(QVector<double> Tsupply, QVector<double
     {
         int k1=0;
         for(j = 0; j < m ; j++){
-            if(VFCurvas[i]>= VectorFriasMATRIZ[j][0]-1 && VFCurvas[i]<= VectorFriasMATRIZ[j][1]-1 )
+            if(VFCurvas[i]>= VectorFriasMATRIZ[j][0]-.1 && VFCurvas[i]<= VectorFriasMATRIZ[j][1]-.1 )
             {
                 sumCpFri[l1][k1] = VectorFriasMATRIZ[j][2];
             }else{
@@ -1245,7 +1246,7 @@ Plot_Dtmin_vs_Areas::Plot_Dtmin_vs_Areas(QVector<double> Tsupply, QVector<double
     for( i = 1; i < r3; ++i){
         k = 0;
         for(j = 0; j < r4; ++j){
-            if(VectorCorrientesTotal[i][1] <= VCC[j][0]-1 && VectorCorrientesTotal[i][1] >= VCC[j][1] ){
+            if(VectorCorrientesTotal[i][1] <= VCC[j][0]-.1 && VectorCorrientesTotal[i][1] >= VCC[j][1] -.1 ){
                 sumCpCalTab[l][k] = VectorCalientesMATRIZ[j][2];
             }else{
                 sumCpCalTab[l][k] = 0.0 ;
@@ -1266,7 +1267,7 @@ Plot_Dtmin_vs_Areas::Plot_Dtmin_vs_Areas(QVector<double> Tsupply, QVector<double
     for( i = 1; i < r3; ++i){
         k = 0;
         for(j = 0; j < r5; ++j){
-            if(VectorCorrientesTotal[i][1] <= VFC[j][1]-1 && VectorCorrientesTotal[i][1] >= VFC[j][0] ){
+            if(VectorCorrientesTotal[i][0] <= VFC[j][1]-.1 && VectorCorrientesTotal[i][0] >= VFC[j][0] -.1){
                 sumCpFriTab[l][k] = VectorFriasMATRIZ[j][2];
             }else{
                 sumCpFriTab[l][k] = 0.0 ;
@@ -1345,7 +1346,8 @@ Plot_Dtmin_vs_Areas::Plot_Dtmin_vs_Areas(QVector<double> Tsupply, QVector<double
     }
     n = PUNTOSCF.size();
     PuntosCurvasF.resize(PUNTOSCF.size()+1);
-    double max = *std::max_element(VAL2.begin(),VAL2.end());
+    //double max = *std::max_element(VAL2.begin(),VAL2.end());
+    double max = VAL2[VAL2.size()-1];
     PuntosCurvasF[0] = max ;
     for(i = 0; i < n; i++){
         PuntosCurvasF[i+1] = PuntosCurvasF[i] + PUNTOSCF[i][3];

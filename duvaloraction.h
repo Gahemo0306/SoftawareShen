@@ -387,4 +387,49 @@ private:
 QDataStream &operator<<(QDataStream &out16, const VecGCCDD &GCCDD);
 QDataStream &operator>>(QDataStream &in16, VecGCCDD &GCCDD);
 
+class VecAreasUniforme
+{
+public:
+    VecAreasUniforme(bool uniforme, bool diverso,
+                     QVector<double> &TS, QVector<double> &TE,
+                     QVector<double> &Wcp,QVector<double> &h ,
+                     QVector<double> &Calentamiento, QVector<double> &Enfriamento,
+                     double Min,double Max, double Inc, int CTo,int CCo);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    double getMin() const;
+    double getMax() const;
+    double getInc() const;
+    int getCTo() const;
+    int getCCo() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    QVector<double> geth() const;
+    QVector<double> getCalentamiento() const;
+    QVector<double> getEnfriamento() const;
+    friend QDataStream &operator<<(QDataStream &out17, const VecAreasUniforme &VAU);
+    friend QDataStream &operator>>(QDataStream &in17, VecAreasUniforme &VAU);
+private:
+    bool Muniforme,Mdiverso;
+    double MMin, MMax, MInc, MCTo, MCCo;
+    QVector<double> MTS, MTE, MWCP, Mh , MCalentamiento, MEnfriamento;
+};
+QDataStream &operator<<(QDataStream &out17, const VecAreasUniforme &VAU);
+QDataStream &operator>>(QDataStream &in17, VecAreasUniforme &VAU);
+
+class VecAreasUniformebool
+{
+public:
+    VecAreasUniformebool(bool uniforme, bool diverso);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    friend QDataStream &operator<<(QDataStream &out18, const VecAreasUniformebool &VecAUB);
+    friend QDataStream &operator>>(QDataStream &in18, VecAreasUniformebool &VecAUB);
+private:
+    bool Muniforme,Mdiverso;
+};
+QDataStream &operator<<(QDataStream &out18, const VecAreasUniformebool &VecAUB);
+QDataStream &operator>>(QDataStream &in18, VecAreasUniformebool &VecAUB);
+
 #endif // DUVALORACTION_H

@@ -82,25 +82,26 @@ void plots::on_tabWidget_currentChanged(int index)
 void plots::on_pushButton_clicked()
 {
     K = K + 1 ;
-    QFile Fil(TABPLOT_FILENAME);
-    if (!Fil.open(QIODevice::ReadOnly)){
-        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
-        return;
-    }
-    QDataStream in4(&Fil);
-    in4.setVersion(QDataStream::Qt_5_4);
-    Tabplot tabvalue;
-    in4 >> tabvalue;
-    int ventanaplot = tabvalue.gettabvalue();
-    Fil.flush();
-    Fil.close();
-    if(ventanaplot == 0){
-        ui->tabWidget->addTab(new plotter(), QString("Plot %0").arg(K));
-    }else if(ventanaplot == 1){
-        ui->tabWidget->addTab(new plotter(), QString("Plot %0").arg(K));
-    }else if(ventanaplot ==2 ){
-        ui->tabWidget->addTab(new plotter(), QString("Plot %0").arg(K));
-    }
+    ui->tabWidget->addTab(new plotter(), QString("Plot %0").arg(K));
+//    QFile Fil(TABPLOT_FILENAME);
+//    if (!Fil.open(QIODevice::ReadOnly)){
+//        QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+//        return;
+//    }
+//    QDataStream in4(&Fil);
+//    in4.setVersion(QDataStream::Qt_5_4);
+//    Tabplot tabvalue;
+//    in4 >> tabvalue;
+//    int ventanaplot = tabvalue.gettabvalue();
+//    Fil.flush();
+//    Fil.close();
+//    if(ventanaplot == 0){
+//        ui->tabWidget->addTab(new plotter(), QString("Plot %0").arg(K));
+//    }else if(ventanaplot == 1){
+//        ui->tabWidget->addTab(new plotter(), QString("Plot %0").arg(K));
+//    }else if(ventanaplot ==2 ){
+//        ui->tabWidget->addTab(new plotter(), QString("Plot %0").arg(K));
+//    }else if(ventanaplot ==4)
 }
 
 void plots::on_tabWidget_tabCloseRequested(int index)

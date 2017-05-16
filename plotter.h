@@ -18,7 +18,8 @@ public:
     explicit plotter(QWidget *parent = 0);
     ~plotter();
     void plot(int ventanaplot, bool uniforme, bool diverso, bool estatico, bool incremento,
-    QVector<double> TS, QVector<double> TE, QVector<double> Wcp, QVector<double> h, double Min, double MAx, double Inc, double K);
+              QVector<double> TS, QVector<double> TE, QVector<double> Wcp, QVector<double> h,
+              QVector<double> Calentamiento, QVector<double> Enfriamento, int CTo, int CCo, double Min, double MAx, double Inc, double K);
 
 private:
     Ui::plotter *ui;

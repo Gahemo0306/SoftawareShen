@@ -18,23 +18,21 @@ public:
 private slots:
     void on_Uniform_clicked();
     void on_Diverse_clicked();
-    void on_Static_clicked();
-    void on_Increment_clicked();
-    void on_Plot_clicked();
     void RADIOBUTTONS();
+    void accionguardar();
+    void on_SBk_valueChanged();
 
-    void on_SBk_valueChanged(double arg1);
+    void on_SBmin_valueChanged();
 
-    void on_SBmin_valueChanged(double arg1);
+    void on_SBmax_valueChanged();
 
-    void on_SBmax_valueChanged(double arg1);
+    void on_SBinc_valueChanged();
 
-    void on_SBinc_valueChanged(double arg1);
-
-    void on_Services_cellChanged(int row, int column);
+    void on_Services_cellChanged();
 
 private:
     Ui::contenido_plots_area *ui;
+    double K, Min,Max,Inc;
 };
 
 #endif // CONTENIDO_PLOTS_AREA_H

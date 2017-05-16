@@ -25,6 +25,8 @@
 #define VECPLOTGCCDINAMICA_DIVERSO_FILENAME "./Vecplotgccdd.bin"
 
 #define VECPLOTAREAS_BOOL_FILENAME "./Vecplotareasbool"
-#define VECPLOTAREASDINAMICO_FILENAME "./Vecplotareasdin"
+#define VECPLOTAREAS_UNIFORME_FILENAME "./Vecplotareasdin"
+#define VECPLOTAREAS_DIVERSO_FILENAME "./Vecplotareasdiv"
+
 
 #endif // VALORACTION_H
