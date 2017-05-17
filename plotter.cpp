@@ -446,11 +446,10 @@ plotter::plotter(QWidget *parent) :
         in18 >> VecAUbool;
         bool uniforme = VecAUbool.getUniforme();
         bool diverso = VecAUbool.getDiverso();
-        qDebug() << uniforme << diverso;
         if(uniforme == true){
             QFile FileAreas(VECPLOTAREAS_UNIFORME_FILENAME);
             if (!FileAreas.open(QIODevice::ReadOnly)){
-                QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
                 return;
             }
             QDataStream in17(&FileAreas);
@@ -487,7 +486,45 @@ plotter::plotter(QWidget *parent) :
             FileAreas.flush();
             FileAreas.close();
         }else if(diverso == true){
-
+            QFile FileAreas(VECPLOTAREAS_DIVERSO_FILENAME);
+            if (!FileAreas.open(QIODevice::ReadOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+                return;
+            }
+            QDataStream in19(&FileAreas);
+            in19.setVersion(QDataStream::Qt_5_4);
+            QVector<double> TS,TE,Wcp,h,Calentamiento,Enfriamento;
+            //bool uniforme, diverso;
+            double Min,Max,Inc,K,CTo,CCo;
+            TS.resize(10);
+            TE.resize(10);
+            Wcp.resize(10);
+            h.resize(10);
+            Calentamiento.resize(10);
+            Enfriamento.resize(10);
+            Min = 0,Max = 0,Inc = 0,CTo = 0,CCo = 0, K = 0;
+            VecAreasDiverso VAD(uniforme,diverso,TS,TE,Wcp,h,Calentamiento,Enfriamento,Min,Max,Inc,K,CTo,CCo);
+            //VecAreasUniforme VAU(uniforme,diverso,TS,TE,Wcp,h,Calentamiento,Enfriamento,Min,Max,Inc,Cto,CCo);
+            in19 >> VAD;
+            bool uniforme2 = VAD.getUniforme();
+            bool diverso2 = VAD.getDiverso();
+            bool estatico2 = false;
+            bool incremento2 = false;
+            QVector<double> TS2 = VAD.getTS();
+            QVector<double> TE2 = VAD.getTE();
+            QVector<double> Wcp2 = VAD.getWCP();
+            QVector<double> H2 = VAD.geth();
+            QVector<double> Calentamiento2 = VAD.getCalentamiento();
+            QVector<double> Enfriamento2 = VAD.getEnfriamento();
+            double Min2 = VAD.getMin();
+            double Max2 = VAD.getMax();
+            double Inc2 = VAD.getInc();
+            double K2 = VAD.getK();
+            int CTo2 = VAD.getCTo();
+            int CCo2 = VAD.getCCo();
+            plot(ventanaplot,uniforme2,diverso2,estatico2,incremento2,TS2,TE2,Wcp2,H2,Calentamiento2,Enfriamento2,CTo2,CCo2,Min2,Max2,Inc2,K2);
+            FileAreas.flush();
+            FileAreas.close();
         }
         FileBools.flush();
         FileBools.close();
@@ -763,31 +800,62 @@ void plotter::plot(int ventanaplot, bool uniforme, bool diverso, bool estatico, 
             ui->qcustomplot->replot();
         }
     }else if(ventanaplot==3){ //areas
-        double Minimo = Min;
-        double Maximo = Max;
-        double Incremento = Inc;
-        double Iteraciones =(Maximo-Minimo)/Incremento;
-        double DTmin = Minimo;
-        QVector<double> AREAS,DTMIN;
-        AREAS.resize(Iteraciones+1);
-        DTMIN.resize(Iteraciones+1);
-        for(int i = 0; i < (Iteraciones+1) ; i++){
-             Plot_Dtmin_vs_Areas plot3(TS,TE,Wcp,h,Calentamiento,Enfriamento,DTmin,CTo,CCo);
-             AREAS[i] = plot3.getAREAS();
-             DTMIN[i] = DTmin;
-             DTmin = DTmin + Incremento;
+        if(uniforme == true){
+            double Minimo = Min;
+            double Maximo = Max;
+            double Incremento = Inc;
+            double Iteraciones =(Maximo-Minimo)/Incremento;
+            double DTmin = Minimo;
+            QVector<double> AREAS,DTMIN;
+            AREAS.resize(Iteraciones+1);
+            DTMIN.resize(Iteraciones+1);
+            for(int i = 0; i < (Iteraciones+1) ; i++){
+                 Plot_Dtmin_vs_Areas plot3(TS,TE,Wcp,h,Calentamiento,Enfriamento,DTmin,CTo,CCo);
+                 AREAS[i] = plot3.getAREAS();
+                 DTMIN[i] = DTmin;
+                 DTmin = DTmin + Incremento;
+            }
+            ui->qcustomplot->addGraph();
+            ui->qcustomplot->graph(0)->setPen(QPen(Qt::red));
+            ui->qcustomplot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
+            ui->qcustomplot->graph(0)->setLineStyle(QCPGraph::lsLine);
+            ui->qcustomplot->graph(0)->setData(DTMIN,AREAS);
+            ui->qcustomplot->graph(0)->rescaleAxes();
+            ui->qcustomplot->graph(0)->rescaleAxes(true);
+            ui->qcustomplot->xAxis->setLabel("Area");
+            ui->qcustomplot->yAxis->setLabel("Delta T min");
+            ui->qcustomplot->plotLayout()->insertRow(0);
+            ui->qcustomplot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->qcustomplot, "Area vs Delta T min", QFont("sans", 12, QFont::Bold)));
+            ui->qcustomplot->replot();
+        }else if(diverso == true){
+//            double Minimo = Min;
+//            double Maximo = Max;
+//            double Incremento = Inc;
+//            double Iteraciones =(Maximo-Minimo)/Incremento;
+            double DTmin = Min;
+//            QVector<double> AREAS,DTMIN;
+//            AREAS.resize(Iteraciones+1);
+//            DTMIN.resize(Iteraciones+1);
+
+//            for(int i = 0; i < (Iteraciones+1) ; i++){
+                 Plot_Dtmin_vs_Areas_DIVERSO(TS,TE,Wcp,h,Calentamiento,Enfriamento,K,DTmin,CTo,CCo);
+//                 Plot_Dtmin_vs_Areas plot3(TS,TE,Wcp,h,Calentamiento,Enfriamento,DTmin,CTo,CCo);
+//                 AREAS[i] = plot3.getAREAS();
+//                 DTMIN[i] = DTmin;
+//                 DTmin = DTmin + Incremento;
+//            }
+//            ui->qcustomplot->addGraph();
+//            ui->qcustomplot->graph(0)->setPen(QPen(Qt::red));
+//            ui->qcustomplot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
+//            ui->qcustomplot->graph(0)->setLineStyle(QCPGraph::lsLine);
+//            ui->qcustomplot->graph(0)->setData(DTMIN,AREAS);
+//            ui->qcustomplot->graph(0)->rescaleAxes();
+//            ui->qcustomplot->graph(0)->rescaleAxes(true);
+//            ui->qcustomplot->xAxis->setLabel("Area");
+//            ui->qcustomplot->yAxis->setLabel("Delta T min");
+//            ui->qcustomplot->plotLayout()->insertRow(0);
+//            ui->qcustomplot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->qcustomplot, "Area vs Delta T min", QFont("sans", 12, QFont::Bold)));
+//            ui->qcustomplot->replot();
         }
-        ui->qcustomplot->addGraph();
-        ui->qcustomplot->graph(0)->setPen(QPen(Qt::red));
-        ui->qcustomplot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
-        ui->qcustomplot->graph(0)->setLineStyle(QCPGraph::lsLine);
-        ui->qcustomplot->graph(0)->setData(DTMIN,AREAS);
-        ui->qcustomplot->graph(0)->rescaleAxes();
-        ui->qcustomplot->graph(0)->rescaleAxes(true);
-        ui->qcustomplot->xAxis->setLabel("Area");
-        ui->qcustomplot->yAxis->setLabel("Delta T min");
-        ui->qcustomplot->plotLayout()->insertRow(0);
-        ui->qcustomplot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->qcustomplot, "Area vs Delta T min", QFont("sans", 12, QFont::Bold)));
-        ui->qcustomplot->replot();
     }
 }

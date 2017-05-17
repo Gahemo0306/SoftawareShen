@@ -266,7 +266,28 @@ void contenido_plots_area::accionguardar()
         FileAreas.flush();
         FileAreas.close();
     }else if(diverso == true){
-        //
+        QFile FileBools(VECPLOTAREAS_BOOL_FILENAME);
+            if (!FileBools.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this,tr("Error"),tr("Error"));
+            return;
+        }
+        QDataStream out18(&FileBools);
+        out18.setVersion(QDataStream::Qt_5_4);
+        VecAreasUniformebool VecAUbool(uniforme,diverso);
+        out18 << VecAUbool;
+        FileBools.flush();
+        FileBools.close();
+        QFile FileAreas(VECPLOTAREAS_DIVERSO_FILENAME);
+        if (!FileAreas.open(QIODevice::WriteOnly)){
+            QMessageBox::warning(this,tr("Error"),tr("Error"));
+            return;
+        }
+        QDataStream out19(&FileAreas);
+        out19.setVersion(QDataStream::Qt_5_4);
+        VecAreasDiverso VAD(uniforme,diverso,TS,TE,Wcp,h,Calentamiento,Enfriamento,Min,Max,Inc,K,CTo,CCo);
+        out19 << VAD;
+        FileAreas.flush();
+        FileAreas.close();
     }
 
 }

@@ -432,4 +432,36 @@ private:
 QDataStream &operator<<(QDataStream &out18, const VecAreasUniformebool &VecAUB);
 QDataStream &operator>>(QDataStream &in18, VecAreasUniformebool &VecAUB);
 
+class VecAreasDiverso
+{
+public:
+    VecAreasDiverso(bool uniforme, bool diverso,
+                     QVector<double> &TS, QVector<double> &TE,
+                     QVector<double> &Wcp,QVector<double> &h ,
+                     QVector<double> &Calentamiento, QVector<double> &Enfriamento,
+                     double Min,double Max, double Inc, double K, int CTo,int CCo);
+    bool getUniforme() const;
+    bool getDiverso() const;
+    double getMin() const;
+    double getMax() const;
+    double getInc() const;
+    double getK() const;
+    int getCTo() const;
+    int getCCo() const;
+    QVector<double> getTS() const;
+    QVector<double> getTE() const;
+    QVector<double> getWCP() const;
+    QVector<double> geth() const;
+    QVector<double> getCalentamiento() const;
+    QVector<double> getEnfriamento() const;
+    friend QDataStream &operator<<(QDataStream &out19, const VecAreasDiverso &VAD);
+    friend QDataStream &operator>>(QDataStream &in19, VecAreasDiverso &VAD);
+private:
+    bool Muniforme,Mdiverso;
+    double MMin, MMax, MInc, MCTo, MCCo,MK;
+    QVector<double> MTS, MTE, MWCP, Mh , MCalentamiento, MEnfriamento;
+};
+QDataStream &operator<<(QDataStream &out19, const VecAreasDiverso &VAD);
+QDataStream &operator>>(QDataStream &in19, VecAreasDiverso &VAD);
+
 #endif // DUVALORACTION_H

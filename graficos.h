@@ -117,4 +117,15 @@ private:
     QVector<double> MGCTEMPERATURAS,MGCENTALPIA;
 };
 
+class Plot_Dtmin_vs_Areas_DIVERSO
+{
+public:
+    Plot_Dtmin_vs_Areas_DIVERSO(QVector<double> Tsupply, QVector<double> Ttarget,
+                        QVector<double> Cp, QVector<double> h, QVector<double> Calentamiento,
+                        QVector<double> Enfriamento,double K,double DTmin,int CTo, int CCo);
+    double getAREAS();
+private:
+    double MAREAS;
+};
+
 #endif // GRAFICOS_H
