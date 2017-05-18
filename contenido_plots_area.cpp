@@ -256,7 +256,7 @@ void contenido_plots_area::accionguardar()
         FileBools.close();
         QFile FileAreas(VECPLOTAREAS_UNIFORME_FILENAME);
         if (!FileAreas.open(QIODevice::WriteOnly)){
-            QMessageBox::warning(this,tr("Error"),tr("Nada no pasa nada"));
+            QMessageBox::warning(this,tr("Error"),tr("Error"));
             return;
         }
         QDataStream out17(&FileAreas);

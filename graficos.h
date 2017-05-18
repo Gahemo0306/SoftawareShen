@@ -128,4 +128,18 @@ private:
     double MAREAS;
 };
 
+class FindKvalue
+{
+public:
+    FindKvalue(QVector<double> Tsupply, QVector<double> Ttarget,
+               QVector<double> Cp, QVector<double> h , double K, double DTmin);
+    //double F(double K);
+    double getK();
+    double getUC();
+    double getUF();
+private:
+    //double MTsupply,MTtarget,MCp,Mh,MDTmin;
+    double MUTILIDADCALENTAMIENTO, MUTILIDADFRIA;
+};
+
 #endif // GRAFICOS_H
