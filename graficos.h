@@ -2,6 +2,7 @@
 #define GRAFICOS_H
 #include <QVector>
 #include <QDebug>
+#include <iterator>
 //#include <qalgorithms.h>
 
 class Graficos
@@ -77,9 +78,11 @@ public:
     QVector<double> getCCTEMPERATURAS();
     QVector<double> getCFENTALPIA();
     QVector<double> getCFTEMPERATURAS();
+    double getK();
 private:
     QVector<double> MCCENTALPIA,MCCTEMPERATURAS; //,Mh;
     QVector<double> MCFENTALPIA,MCFTEMPERATURAS;
+    double MK;
 };
 
 
@@ -87,7 +90,8 @@ class Plot_CCAJUSTADA_DIVERSA
 {
 public:
     Plot_CCAJUSTADA_DIVERSA(QVector<double> Tsupply, QVector<double> Ttarget,
-                            QVector<double> Cp, QVector<double> h, double DTmin, double K);
+                            QVector<double> Cp, QVector<double> h, double DTmin, double K,
+                            float punto1,float punto2);
     QVector<double> getCCENTALPIA();
     QVector<double> getCCTEMPERATURAS();
     QVector<double> getCFENTALPIAAJUSTADAS();
@@ -96,12 +100,14 @@ public:
     QVector<QVector<double>> getVecHeatFlow();
     QVector<QVector<double>> getVecAdjHeatFlow();
     QVector<double> getDeficit();
+    double getK();
 private:
     QVector<double> MCCENTALPIA,MCCTEMPERATURAS; //,Mh;
     QVector<double> MCFENTALPIAAJUSTADA,MCFTEMPERATURASAJUSTADA;
     QVector<QVector<double>> MVectorCorrientesTotal;
     QVector<QVector<double>> MVecHeatFlow,MVecAdjHeatFlow;
     QVector<double> MDeficit;
+    double MK;
 };
 
 
@@ -110,11 +116,13 @@ class PlotGCC_DIVERSA
 public:
     PlotGCC_DIVERSA(QVector<double> Tsupply, QVector<double> Ttarget,
                     QVector<double> Cp, QVector<double> h , double DTmin,
-                    double K);
+                    double K,float punto1,float punto2);
     QVector<double> getGCTEMPERATURAS();
     QVector<double> getGCENTALPIA();
+    double getK();
 private:
     QVector<double> MGCTEMPERATURAS,MGCENTALPIA;
+    double MK;
 };
 
 class Plot_Dtmin_vs_Areas_DIVERSO
@@ -122,10 +130,12 @@ class Plot_Dtmin_vs_Areas_DIVERSO
 public:
     Plot_Dtmin_vs_Areas_DIVERSO(QVector<double> Tsupply, QVector<double> Ttarget,
                         QVector<double> Cp, QVector<double> h, QVector<double> Calentamiento,
-                        QVector<double> Enfriamento,double K,double DTmin,int CTo, int CCo);
+                        QVector<double> Enfriamento, double K, double DTmin, int CTo, int CCo, float punto1, float punto2);
     double getAREAS();
+    double getK();
 private:
     double MAREAS;
+    double MK;
 };
 
 class FindKvalue
@@ -135,8 +145,8 @@ public:
                QVector<double> Cp, QVector<double> h , double K, double DTmin);
     //double F(double K);
     double getK();
-    double getUC();
-    double getUF();
+    float getUC();
+    float getUF();
 private:
     //double MTsupply,MTtarget,MCp,Mh,MDTmin;
     double MUTILIDADCALENTAMIENTO, MUTILIDADFRIA;

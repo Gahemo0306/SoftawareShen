@@ -138,7 +138,9 @@ void problemtable::on_pushButton_clicked()
             j=j+1;
         }
     }else if(diverso==true){
-        Plot_CCAJUSTADA_DIVERSA plot2(TS,TE,Wcp,h,DTmin,K);
+        float punto1 = 0.05;
+        float punto2 = 10.0;
+        Plot_CCAJUSTADA_DIVERSA plot2(TS,TE,Wcp,h,DTmin,K,punto1,punto2);
         QVector<QVector<double>> VecCorrientesTotal = plot2.getVectorCorrientesTotal();
         QVector<QVector<double>> VecHeatFlow = plot2.getVecHeatFlow();
         QVector<QVector<double>> VecAdjHeatFlow = plot2.getVecAdjHeatFlow();
