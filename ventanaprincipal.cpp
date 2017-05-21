@@ -18,6 +18,7 @@
 #include "plots.h"
 #include "summary.h"
 #include "problemtable.h"
+#include "help.h"
 
 VentanaPrincipal::VentanaPrincipal(QWidget *parent) :
     QMainWindow(parent),
@@ -59,6 +60,9 @@ void VentanaPrincipal::loadSubWindow(QWidget *widget,int ValorACTION)
     }else if (ValorACTION == 6){
         Titulo = "Problem Table";
         RutaIcono = ":/resources/Resources/table-icon-png-2.png";
+    }else if( ValorACTION == 7){
+        Titulo = "Help";
+        RutaIcono = ":/resources/Resources/ayuda.png";
     }
     auto window = ui->mdiArea->addSubWindow(widget);
     window->setWindowTitle(Titulo);
@@ -159,4 +163,10 @@ void VentanaPrincipal::on_actionProblem_Table_triggered()
 {
     int ValorACTION = 6;
     loadSubWindow(new problemtable(this),ValorACTION);
+}
+
+void VentanaPrincipal::on_actionHelp_triggered()
+{
+    int ValorACTION = 7;
+    loadSubWindow(new Help(this),ValorACTION);
 }

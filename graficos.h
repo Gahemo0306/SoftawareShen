@@ -73,7 +73,7 @@ class Plot_curvascompuestas_diversa
 {
 public:
     Plot_curvascompuestas_diversa(QVector<double> Tsupply, QVector<double> Ttarget,
-                          QVector<double> Cp, QVector<double> h, double DTmin, double K);
+                          QVector<double> Cp, QVector<double> h, double DTmin, double K, float punto1, float punto2);
     QVector<double> getCCENTALPIA();
     QVector<double> getCCTEMPERATURAS();
     QVector<double> getCFENTALPIA();
@@ -130,7 +130,7 @@ class Plot_Dtmin_vs_Areas_DIVERSO
 public:
     Plot_Dtmin_vs_Areas_DIVERSO(QVector<double> Tsupply, QVector<double> Ttarget,
                         QVector<double> Cp, QVector<double> h, QVector<double> Calentamiento,
-                        QVector<double> Enfriamento, double K, double DTmin, int CTo, int CCo, float punto1, float punto2);
+                        QVector<double> Enfriamento, double K, double DTmin, float punto1, float punto2);
     double getAREAS();
     double getK();
 private:

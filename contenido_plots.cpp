@@ -205,7 +205,6 @@ void Contenido_PLOTS::accionguardar()
     Tabplot tabvalue;
     in4 >> tabvalue;
     int ventanaplot = tabvalue.gettabvalue();
-    qDebug() << ventanaplot;
     Fil.flush();
     Fil.close();
     if(ventanaplot == 1) // curvas compuestas ajustadas)
@@ -423,3 +422,8 @@ void Contenido_PLOTS::accionguardar()
     }
 }
 
+
+void Contenido_PLOTS::on_pushButton_clicked()
+{
+
+}

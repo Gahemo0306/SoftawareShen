@@ -19,5 +19,9 @@
         <file>Resources/custom.png</file>
         <file>Resources/plots.png</file>
         <file>Resources/table-icon-png-2.png</file>
+        <file>Resources/help_carpeta.png</file>
+        <file>Resources/241143.png</file>
+        <file>Resources/help-flecha.png</file>
+        <file>Resources/NuevaPresentacionBlanco.png</file>
     </qresource>
 </RCC>

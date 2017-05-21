@@ -2231,9 +2231,55 @@ QVector<double> Plot_grancurvacompuesta::getGCENTALPIA()
 
 Plot_curvascompuestas_diversa::Plot_curvascompuestas_diversa(QVector<double> Tsupply, QVector<double> Ttarget,
                                                              QVector<double> Cp, QVector<double> h, double DTmin,
-                                                             double K)
+                                                             double K,float punto1,float punto2)
 {
     int i,j,n,nfils,ncols,Pares,contador,k;
+    Plot_curvascompuestasajustadas plot1(Tsupply,Ttarget,Cp,DTmin);
+    QVector<QVector<double>> VADHF = plot1.getVecAdjHeatFlow();
+    float UTILIDADCALENTAMIENTO = VADHF[0][0];
+    float UTILIDADFRIA = VADHF[VADHF.size()-1][1];
+    double ERROR;
+    float error1,error2,error3,error = 100.00, errorPasado = 100.00,tolerancia = 0.000001;
+    QVector<float> ValoresdeK,ValoresdeError;
+    ValoresdeK.resize(31);
+    ValoresdeError.resize(31);
+    i = 0;
+    int iterador = 0;
+    int min_pos;
+    while(error >= tolerancia ){//while(error >= tolerancia ){
+        float incremento = (punto2-punto1)/30.0;
+        ValoresdeK[0] = double (punto1);
+        for(int i = 1; i <= 30; i++){
+            ValoresdeK[i] = float (punto1 + incremento);
+            punto1 = punto1 + incremento;
+        }
+        for(int i = 0; i < ValoresdeK.size(); i++){
+            K = double (ValoresdeK[i]);
+            FindKvalue Ki(Tsupply,Ttarget,Cp,h,K,DTmin);
+            float KiUC = Ki.getUC();
+            float KiUF = Ki.getUF();
+            error1 = qFabs( ((UTILIDADCALENTAMIENTO - KiUC)/KiUC));
+            error2 = qFabs( ((UTILIDADFRIA - KiUF )/KiUF ));
+            error3 = error1 + error2;
+            ValoresdeError[i] = float (error3);
+        }
+        min_pos = std::distance(ValoresdeError.begin(),std::min_element(ValoresdeError.begin(),ValoresdeError.end()));
+        ERROR = *std::min_element(ValoresdeError.begin(),ValoresdeError.end()); //double
+        error = float (ERROR);
+        if(error == errorPasado){
+            break;
+        }
+        errorPasado = error;
+        //qDebug() <<  "error" << error  << "Valor de K" << ValoresdeK[min_pos] << iterador << min_pos;
+        if(error > tolerancia){
+            punto1 = ValoresdeK[min_pos]-incremento;
+            punto2 = ValoresdeK[min_pos]+incremento;
+            iterador = iterador +1;
+        }
+    }
+    MK = K;
+    K = ValoresdeK[min_pos];
+
     QVector<double> DeltasTi;
     n = Tsupply.size();
     DeltasTi.resize(n);
@@ -2599,7 +2645,7 @@ Plot_CCAJUSTADA_DIVERSA::Plot_CCAJUSTADA_DIVERSA(QVector<double> Tsupply, QVecto
             break;
         }
         errorPasado = error;
-        qDebug() <<  "error" << error  << "Valor de K" << ValoresdeK[min_pos] << iterador << min_pos;
+        //qDebug() <<  "error" << error  << "Valor de K" << ValoresdeK[min_pos] << iterador << min_pos;
         if(error > tolerancia){
             punto1 = ValoresdeK[min_pos]-incremento;
             punto2 = ValoresdeK[min_pos]+incremento;
@@ -3223,7 +3269,7 @@ PlotGCC_DIVERSA::PlotGCC_DIVERSA(QVector<double> Tsupply, QVector<double> Ttarge
             break;
         }
         errorPasado = error;
-        qDebug() <<  "error" << error  << "Valor de K" << ValoresdeK[min_pos] << iterador << min_pos;
+        //qDebug() <<  "error" << error  << "Valor de K" << ValoresdeK[min_pos] << iterador << min_pos;
         if(error > tolerancia){
             punto1 = ValoresdeK[min_pos]-incremento;
             punto2 = ValoresdeK[min_pos]+incremento;
@@ -3741,7 +3787,7 @@ Plot_Dtmin_vs_Areas_DIVERSO::Plot_Dtmin_vs_Areas_DIVERSO(QVector<double> Tsupply
                                                          QVector<double> Cp, QVector<double> h,
                                                          QVector<double> Calentamiento,
                                                          QVector<double> Enfriamento,
-                                                         double K, double DTmin, int CTo, int CCo,float punto1, float punto2)
+                                                         double K, double DTmin,float punto1, float punto2)
 {
     int i,j,n,nfils,ncols,Pares,contador,k;
     QVector<double> VectorCalientes, VectorCalientesCp;
@@ -3783,7 +3829,7 @@ Plot_Dtmin_vs_Areas_DIVERSO::Plot_Dtmin_vs_Areas_DIVERSO(QVector<double> Tsupply
             break;
         }
         errorPasado = error;
-        qDebug() <<  "error" << error  << "Valor de K" << ValoresdeK[min_pos] << iterador << min_pos;
+        //qDebug() <<  "error" << error  << "Valor de K" << ValoresdeK[min_pos] << iterador << min_pos;
         if(error > tolerancia){
             punto1 = ValoresdeK[min_pos]-incremento;
             punto2 = ValoresdeK[min_pos]+incremento;

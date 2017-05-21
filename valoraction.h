@@ -28,5 +28,7 @@
 #define VECPLOTAREAS_UNIFORME_FILENAME "./Vecplotareasdin"
 #define VECPLOTAREAS_DIVERSO_FILENAME "./Vecplotareasdiv"
 
+#define AYUDA_FILENAME "./Help"
+
 
 #endif // VALORACTION_H

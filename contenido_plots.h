@@ -45,6 +45,8 @@ private slots:
 
     void on_Increment_valueChanged();
     void accionguardar();
+    void on_pushButton_clicked();
+
 private:
     Ui::Contenido_PLOTS *ui;
     double DTmin,Min,Max,Inc,K;

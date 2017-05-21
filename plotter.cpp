@@ -573,7 +573,9 @@ void plotter::plot(int ventanaplot, bool uniforme, bool diverso, bool estatico, 
             ui->qcustomplot->replot();
         }else if(diverso == true){
             double DTmin = Min;
-            Plot_curvascompuestas_diversa plot1(TS,TE,Wcp,h,DTmin,K);
+            float punto1 = 0.05;
+            float punto2 = 10.0;
+            Plot_curvascompuestas_diversa plot1(TS,TE,Wcp,h,DTmin,K,punto1,punto2);
             QVector<double> CCENTALPIA = plot1.getCCENTALPIA();
             QVector<double> CCTEMPERATURAS = plot1.getCCTEMPERATURAS();
             ui->qcustomplot->setVisible(true);
@@ -851,11 +853,17 @@ void plotter::plot(int ventanaplot, bool uniforme, bool diverso, bool estatico, 
             DTMIN.resize(Iteraciones+1);
             for(int i = 0; i < (Iteraciones+1) ; i++){
                  Plot_Dtmin_vs_Areas plot3(TS,TE,Wcp,h,Calentamiento,Enfriamento,DTmin,CTo,CCo);
-                 AREAS[i] = plot3.getAREAS();
-                 DTMIN[i] = DTmin;
+                 double AREA = plot3.getAREAS();
+                 if(AREA < 0){
+                    AREAS[i] = AREAS[i-1];
+                    DTMIN[i] = DTMIN[i-1];
+                 }else{
+                     AREAS[i] = AREA;
+                     DTMIN[i] = DTmin;
+                 }
                  DTmin = DTmin + Incremento;
             }
-            qDebug() << AREAS;
+            // si un valor no esta bien hay que corregir qDebug() << AREAS;
             ui->qcustomplot->legend->setVisible(true);
             ui->qcustomplot->legend->setFont(QFont("Helvetica",9));
             ui->qcustomplot->addGraph();
@@ -881,13 +889,19 @@ void plotter::plot(int ventanaplot, bool uniforme, bool diverso, bool estatico, 
             QVector<double> DTMIN;
             AREAS.resize(Iteraciones+1);
             DTMIN.resize(Iteraciones+1);
-            float punto1 = 0.00;
+            float punto1 = 0.05;
             float punto2 = 10.0;
             for(int i = 0; i < (Iteraciones+1) ; i++){
                  Plot_Dtmin_vs_Areas_DIVERSO plot3(TS,TE,Wcp,h,Calentamiento,Enfriamento,
-                                                   K,DTmin,CTo,CCo,punto1,punto2);
-                 AREAS[i] = plot3.getAREAS();
-                 DTMIN[i] = DTmin;
+                                                   K,DTmin,punto1,punto2);
+                 double AREA = plot3.getAREAS();
+                 if(AREA < 0){
+                     AREAS[i] = AREAS[i-1];
+                     DTMIN[i] = DTMIN[i-1];
+                 }else{
+                     AREAS[i] = AREA;
+                     DTMIN[i] = DTmin;
+                 }
                  DTmin = DTmin + Incremento;
                  punto1 = float (plot3.getK());
                  punto2 = 10.0;

@@ -5,6 +5,7 @@
 #include <QtCore>
 #include <QtGui>
 #include "tabladatos.h"
+#include "help.h"
 
 namespace Ui {
 class VentanaPrincipal;
@@ -39,6 +40,8 @@ private slots:
     void on_actionReport_Options_triggered();
 
     void on_actionProblem_Table_triggered();
+
+    void on_actionHelp_triggered();
 
 signals:
     void actionNew(int ValorTabla);
